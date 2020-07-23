@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="425.0" prefWidth="930.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.app.view.ConfiguracionesController">
+   <children>
+      <VBox prefHeight="428.0" prefWidth="611.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <TabPane fx:id="tabPane" prefHeight="582.0" prefWidth="730.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="Productos">
+                     <content>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <SplitPane dividerPositions="0.10215053763440861" orientation="VERTICAL" prefHeight="374.0" prefWidth="611.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <items>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="609.0" spacing="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                          </HBox>
+                                       </children>
+                                    </AnchorPane>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <SplitPane dividerPositions="0.34596375617792424" layoutX="118.0" layoutY="171.0" prefHeight="541.0" prefWidth="743.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <items>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                   <children>
+                                                      <VBox prefHeight="539.0" prefWidth="153.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                         <children>
+                                                            <TableView fx:id="tblEntidades" onMouseClicked="#handleTblEntidadesSelected" prefHeight="314.0" prefWidth="210.0">
+                                                              <columns>
+                                                                <TableColumn fx:id="colNombre" prefWidth="200.0" text="Nombre" />
+                                                                  <TableColumn fx:id="colCodigo" prefWidth="120.0" text="Codigo" visible="false" />
+                                                              </columns>
+                                                            </TableView>
+                                                            <HBox alignment="CENTER" prefHeight="40.0" prefWidth="190.0" spacing="10.0">
+                                                               <children>
+                                                                  <Button fx:id="btnNuevoEntidad" mnemonicParsing="false" onAction="#handleNuevoEntidades" text="Nuevo">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../images/anadir.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic></Button>
+                                                                  <Button fx:id="btnEliminarEntidad" mnemonicParsing="false" onAction="#handleEliminarEntidades" text="Eliminar">
+                                                                   <graphic>
+                                                                        <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../images/borrar.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic>
+                                                                     </Button>
+                                                               </children>
+                                                            </HBox>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </AnchorPane>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="539.0" prefWidth="544.0">
+                                                   <children>
+                                                      <TitledPane animated="false" layoutX="82.0" layoutY="74.0" prefHeight="539.0" prefWidth="545.0" text="Detalle" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <content>
+                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <GridPane layoutX="14.0" layoutY="14.0" prefHeight="156.0" prefWidth="359.0">
+                                                                    <columnConstraints>
+                                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="249.0" minWidth="10.0" prefWidth="135.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="247.0" minWidth="10.0" prefWidth="244.0" />
+                                                                    </columnConstraints>
+                                                                    <rowConstraints>
+                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                    </rowConstraints>
+                                                                     <children>
+                                                                        <Label fx:id="lblNombre" text="Nombre" />
+                                                                        <TextField fx:id="txtEntidadNombre" GridPane.columnIndex="1" />
+                                                                        <Label fx:id="lblCodigo" text="Codigo" GridPane.rowIndex="1" />
+                                                                        <Label fx:id="lblPrecio" text="Precio" GridPane.rowIndex="2" />
+                                                                        <TextField fx:id="txtEntidadCodigo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                        <TextField fx:id="txtEntidadPrecio" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                        <Label fx:id="lblCategoria" text="Categoria" GridPane.rowIndex="3" />
+                                                                        <ComboBox fx:id="cbxCategorias" prefHeight="25.0" prefWidth="234.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />                                                     
+                                                                     </children>
+                                                                  </GridPane>
+                                                                  <Button fx:id="btnAplicarEntidad" layoutX="14.0" layoutY="190.0" mnemonicParsing="false" onAction="#handleAplicarEntidades" text="Aplicar">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../images/guardar.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic></Button>
+                                                               </children>
+                                                            </AnchorPane>
+                                                        </content>
+                                                      </TitledPane>
+                                                   </children>
+                                                </AnchorPane>
+                                            </items>
+                                          </SplitPane>
+                                       </children>
+                                    </AnchorPane>
+                                </items>
+                              </SplitPane>
+                           </children>
+                        </AnchorPane>
+                     </content>  
+                </Tab>
+                  <Tab text="Categorias">
+                     <content>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <SplitPane dividerPositions="0.10215053763440861" orientation="VERTICAL" prefHeight="374.0" prefWidth="611.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <items>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <SplitPane dividerPositions="0.34596375617792424" layoutX="118.0" layoutY="171.0" prefHeight="541.0" prefWidth="743.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <items>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                   <children>
+                                                      <VBox prefHeight="539.0" prefWidth="153.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                         <children>
+                                                            <TableView fx:id="tblCategorias" onMouseClicked="#handleTblCategoriasSelected" prefHeight="314.0" prefWidth="210.0">
+                                                               <columns>
+                                                                  <TableColumn fx:id="colCategoriaNombre" prefWidth="200.0" text="Nombre" />
+                                                                  <TableColumn fx:id="colCategoriaId" prefWidth="120.0" text="Codigo" visible="false" />
+                                                               </columns>
+                                                            </TableView>
+                                                            <HBox alignment="CENTER" prefHeight="40.0" prefWidth="190.0" spacing="10.0">
+                                                               <children>
+                                                                  <Button fx:id="btnNuevoCategoria" mnemonicParsing="false" onAction="#handleNuevoCategoria" text="Nuevo">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../images/anadir.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic>
+                                                                  </Button>
+                                                                  <Button fx:id="btnEliminarCategoria" mnemonicParsing="false" onAction="#handleEliminarCategoria" text="Eliminar">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../images/borrar.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic>
+                                                                  </Button>
+                                                               </children>
+                                                            </HBox>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </AnchorPane>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="539.0" prefWidth="544.0">
+                                                   <children>
+                                                      <TitledPane animated="false" layoutX="82.0" layoutY="74.0" prefHeight="539.0" prefWidth="545.0" text="Detalle" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                         <content>
+                                                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <GridPane layoutX="14.0" layoutY="14.0" prefHeight="51.0" prefWidth="359.0">
+                                                                     <children>
+                                                                        <Label fx:id="lblNombre1" text="Nombre" />
+                                                                        <TextField fx:id="txtCategoriaNombre" GridPane.columnIndex="1" />
+                                                                     </children>
+                                                                     <columnConstraints>
+                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="249.0" minWidth="10.0" prefWidth="135.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="247.0" minWidth="10.0" prefWidth="244.0" />
+                                                                     </columnConstraints>
+                                                                     <rowConstraints>
+                                                                        <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
+                                                                     </rowConstraints>
+                                                                  </GridPane>
+                                                                  <Button fx:id="btnAplicarCategoria" layoutX="14.0" layoutY="85.0" mnemonicParsing="false" onAction="#handleAplicarCategoria" text="Aplicar">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../images/guardar.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic>
+                                                                  </Button>
+                                                               </children>
+                                                            </AnchorPane>
+                                                         </content>
+                                                      </TitledPane>
+                                                   </children>
+                                                </AnchorPane>
+                                             </items>
+                                          </SplitPane>
+                                       </children>
+                                    </AnchorPane>
+                                 </items>
+                              </SplitPane>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="tabUsuarios" text="Usuarios">
+                  	<content>
+                  		<fx:include fx:id="usuariosView" source="UsuariosView.fxml" />
+                  	</content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

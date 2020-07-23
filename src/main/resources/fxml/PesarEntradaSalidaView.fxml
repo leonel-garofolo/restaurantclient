@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import org.javafx.controls.customs.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.javafx.controls.customs.ComboBoxAutoComplete?>
+
+<AnchorPane prefHeight="646.0" prefWidth="1320.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.app.view.PesarEntradaSalidaController">
+   <children>
+      <SplitPane dividerPositions="0.3122977346278317" layoutX="298.0" layoutY="135.0" orientation="VERTICAL" prefHeight="620.0" prefWidth="1088.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="171.0" prefWidth="1086.0">
+               <children>
+                  <VBox prefHeight="139.0" prefWidth="971.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <HBox fx:id="layout1" alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="939.0" spacing="20.0">
+                                 <children>
+                                    <Label style="-fx-font-weight: bold;" text="Pesaje">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <ComboBox fx:id="cbxModoTara" onAction="#handleModoTara" prefHeight="25.0" prefWidth="130.0" />
+                                    <ComboBox fx:id="cbxModalidad" onAction="#handleModalidad" prefWidth="130.0" />
+                                    <ComboBox fx:id="cbxModoChasis" prefWidth="130.0" />
+                                    <Label prefHeight="17.0" prefWidth="66.0" text="Transacción" />
+                                    <TextField fx:id="txtTransaccion" editable="false" prefHeight="25.0" prefWidth="99.0" />
+                                    <Label prefHeight="17.0" prefWidth="37.0" text="Fecha" />
+                                    <TextField fx:id="txtFecha" prefHeight="25.0" prefWidth="142.0" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="42.0" prefWidth="252.0" spacing="15.0">
+                                 <children>
+                                    <Label style="-fx-font-weight: bold;" text="Indicador:">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <ComboBox fx:id="cbxIndicador" onAction="#handleIndicador" prefHeight="25.0" prefWidth="130.0" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="163.0" prefWidth="585.0">
+                           <children>
+                              <TextField fx:id="txtNumberSerial" disable="true" opacity="0.72" prefHeight="102.0" prefWidth="246.0" text="0">
+                                 <HBox.margin>
+                                    <Insets bottom="20.0" left="5.0" right="5.0" top="20.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="48.0" />
+                                 </font>
+                              </TextField>
+                              <HBox prefHeight="146.0" prefWidth="318.0">
+                                 <children>
+                                    <TableView fx:id="tblEjes" prefHeight="146.0" prefWidth="218.0">
+                                      <columns>
+                                        <TableColumn fx:id="colNroEje" prefWidth="56.0" text="Nro Eje" />
+                                        <TableColumn fx:id="colPesoEntrada" text="Peso Entrada" />
+                                          <TableColumn fx:id="colPesoSalida" text="Peso Salida" />
+                                      </columns>
+                                    </TableView>
+                                    <Button fx:id="btnEliminarEje" mnemonicParsing="false" onAction="#handleEliminarEje" prefHeight="26.0" prefWidth="85.0" text="Eliminar">
+                                    	<graphic>
+                                         <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                               <Image url="@../images/borrar.png" />
+                                            </image>
+                                         </ImageView>
+                                      </graphic>
+                                     </Button>
+                                 </children>
+                              </HBox>
+                              <VBox alignment="CENTER_RIGHT" prefHeight="146.0" prefWidth="539.0" spacing="3.0">
+                                 <children>
+                                    <HBox fx:id="hEntrada" alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="578.0" spacing="15.0">
+                                       <children>
+                                         <Button fx:id="btnPesarEntrada" focusTraversable="false" mnemonicParsing="false" prefHeight="37.0" prefWidth="94.0" text="Entrada">
+                                             <graphic>
+                                                <ImageView fitHeight="22.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/entrar.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <TextField fx:id="txtEntrada" editable="false" focusTraversable="false" prefHeight="37.0" prefWidth="105.0">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font></TextField>
+                                          <Label focusTraversable="false" text="kg" />
+                                       </children>
+                                       <padding>
+                                          <Insets right="15.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox fx:id="hSalida" alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="578.0" spacing="15.0">
+                                       <children>
+                                          <Button fx:id="btnPesarSalida" focusTraversable="false" mnemonicParsing="false" prefHeight="37.0" prefWidth="94.0" text="Salida">
+                                             <graphic>
+                                                <ImageView fitHeight="21.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/logout.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <TextField fx:id="txtSalida" editable="false" focusTraversable="false" prefHeight="37.0" prefWidth="105.0">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font></TextField>
+                                          <Label focusTraversable="false" text="kg" />
+                                       </children>
+                                       <padding>
+                                          <Insets right="15.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox fx:id="hNeto" alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="578.0" spacing="15.0">
+                                       <children>
+                                          <Label focusTraversable="false" text="Neto">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="txtNeto" editable="false" focusTraversable="false" prefHeight="37.0" prefWidth="105.0">
+                                             <font>
+                                                <Font size="16.0" />
+                                             </font></TextField>
+                                          <Label focusTraversable="false" text="kg" />
+                                       </children>
+                                       <padding>
+                                          <Insets right="15.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox alignment="CENTER_RIGHT" prefHeight="29.0" prefWidth="446.0" spacing="5.0">
+                                       <children>
+                                          <Button fx:id="btnTomar" mnemonicParsing="false" onAction="#handleTomar" prefHeight="26.0" prefWidth="115.0" text="Tomar Tara">
+                                             <graphic>
+                                                <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/lorry.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="btnIngresoManual" mnemonicParsing="false" onAction="#handleIngManual" prefHeight="26.0" prefWidth="107.0" text="Ing. Manual">
+                                             <graphic>
+                                                <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/clave.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="btnNuevoPesaje" mnemonicParsing="false" onAction="#handleNuevoPesaje" prefHeight="26.0" prefWidth="77.0" text="Nuevo">
+                                             <graphic>
+                                                <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/anadir.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="btnAplicar" mnemonicParsing="false" onAction="#handleAplicar" prefHeight="26.0" prefWidth="83.0" text="Aplicar">
+                                             <graphic>
+                                                <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/guardar.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="btnTicket" mnemonicParsing="false" onAction="#handleTicket" prefHeight="26.0" prefWidth="83.0" text="Ticket">
+                                             <graphic>
+                                                <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/impresora.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="1086.0">
+               <children>
+                  <VBox layoutX="347.0" layoutY="91.0" prefHeight="455.0" prefWidth="1086.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <HBox prefHeight="208.0" prefWidth="1205.0">
+                           <children>
+                              <GridPane focusTraversable="true" prefHeight="173.0" prefWidth="1347.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="118.0" minWidth="10.0" prefWidth="60.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="140.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="246.0" minWidth="10.0" prefWidth="87.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="239.0" minWidth="10.0" prefWidth="140.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="107.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="102.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="200.0" minWidth="6.0" prefWidth="171.0" />
+                                    <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="220.0" minWidth="10.0" prefWidth="195.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="301.0" minWidth="10.0" prefWidth="45.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="227.0" minWidth="10.0" prefWidth="114.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="284.0" minWidth="10.0" prefWidth="169.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="222.0" minWidth="10.0" prefWidth="43.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label fx:id="lblProducto" focusTraversable="false" prefHeight="17.0" prefWidth="54.0" style="-fx-font-weight: bold;" text="Producto" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                                    <Label fx:id="lblCliente" focusTraversable="false" prefHeight="17.0" prefWidth="47.0" style="-fx-font-weight: bold;" text="Cliente" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                                    <Label fx:id="lblTransporte" focusTraversable="false" prefHeight="17.0" prefWidth="72.0" style="-fx-font-weight: bold;" text="Transporte" GridPane.columnIndex="9" GridPane.rowIndex="1" />
+                                    <Label fx:id="lblProcedencia" focusTraversable="false" prefHeight="17.0" prefWidth="72.0" style="-fx-font-weight: bold;" text="Procedencia" GridPane.columnIndex="9" GridPane.rowIndex="2" />
+                                    <ComboBoxAutoComplete fx:id="cbxProducto" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+                                    <ComboBoxAutoComplete fx:id="cbxCliente" prefHeight="25.0" prefWidth="239.0" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+                                    <ComboBoxAutoComplete fx:id="cbxTransporte" prefHeight="25.0" prefWidth="241.0" GridPane.columnIndex="10" GridPane.rowIndex="1" />
+                                    <Button fx:id="btnAccesoProducto" mnemonicParsing="false" onAction="#handleEditProducto" prefHeight="26.0" prefWidth="26.0" GridPane.columnIndex="8" GridPane.rowIndex="1">
+                                    	<graphic>
+	                                    	<ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+		                                       <image>
+		                                          <Image url="@../images/anadir.png" />
+		                                       </image>
+		                                    </ImageView>
+                                    	</graphic>
+                                    </Button>
+                                    <Button fx:id="btnAccesoCliente" mnemonicParsing="false" onAction="#handleEditCliente" prefHeight="26.0" prefWidth="28.0" GridPane.columnIndex="8" GridPane.rowIndex="2">
+                                    	<graphic>
+	                                    	<ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+		                                       <image>
+		                                          <Image url="@../images/anadir.png" />
+		                                       </image>
+		                                    </ImageView>
+                                    	</graphic>
+                                    </Button>
+                                    <Button fx:id="btnAccesoTransporte" mnemonicParsing="false" onAction="#handleEditTransporte" prefHeight="26.0" prefWidth="29.0" GridPane.columnIndex="11" GridPane.rowIndex="1">
+                                    	<graphic>
+	                                    	<ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+		                                       <image>
+		                                          <Image url="@../images/anadir.png" />
+		                                       </image>
+		                                    </ImageView>
+                                    	</graphic>
+                                    </Button>
+                                    <Button fx:id="btnAccesoProcedencia" mnemonicParsing="false" onAction="#handleEditProcedencia" prefHeight="26.0" prefWidth="29.0" GridPane.columnIndex="11" GridPane.rowIndex="2">
+                                    	<graphic>
+	                                    	<ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+		                                       <image>
+		                                          <Image url="@../images/anadir.png" />
+		                                       </image>
+		                                    </ImageView>
+                                    	</graphic>
+                                    </Button>
+                                    <Label prefHeight="17.0" prefWidth="72.0" text="Conductor" visible="false" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+                                    <Label fx:id="lblDocumento" focusTraversable="false" prefHeight="17.0" prefWidth="69.0" text="Documento" GridPane.columnIndex="4" />
+                                    <Label focusTraversable="false" prefHeight="17.0" prefWidth="109.0" style="-fx-font-weight: bold;" text="Patente" />
+                                    <TextField fx:id="txtConductor" visible="false" GridPane.columnIndex="8" GridPane.rowIndex="1" />
+                                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="10" GridPane.rowIndex="2">
+                                       <children>
+                                          <ComboBoxAutoComplete fx:id="cbxProcedencia" prefHeight="25.0" prefWidth="272.0" />
+                                       </children></HBox>
+                                    <Label fx:id="lblObservaciones" focusTraversable="false" prefHeight="17.0" prefWidth="109.0" text="Obs." GridPane.rowIndex="3" />
+                                    <TextArea fx:id="txtObservaciones" prefHeight="71.0" prefWidth="195.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="2" />                                    
+                                    <TextField fx:id="txtNumDoc" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="5" />
+                                    <TextField fx:id="txtFactura" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label fx:id="lblFactura" focusTraversable="false" prefHeight="17.0" prefWidth="109.0" text="Factura" GridPane.rowIndex="2" />
+                                    <TextField fx:id="txtPatente" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                                    <Label fx:id="lblTara" prefHeight="17.0" prefWidth="29.0" style="-fx-font-weight: bold;" text="Tara" GridPane.columnIndex="2" />
+                                    <TextField fx:id="txtTara" editable="false" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="3" />
+                                    <Label fx:id="lblConductor" focusTraversable="false" prefHeight="17.0" prefWidth="64.0" text="Conductor" GridPane.columnIndex="6">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" />
+                                       </GridPane.margin></Label>
+                                    <TextField fx:id="txtConductor" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="7" />
+                                    <Label fx:id="lblDias" prefHeight="17.0" prefWidth="29.0" style="-fx-font-weight: bold;" text="Días" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <TextField fx:id="txtDiasVenc" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                    <Label fx:id="lblUltima" prefHeight="17.0" prefWidth="74.0" style="-fx-font-weight: bold;" text="Ultima Toma" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                    <TextField fx:id="txtUltima" editable="false" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <Label fx:id="lblImpExp" focusTraversable="false" prefHeight="17.0" prefWidth="154.0" text="Importadores / Exportadores" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                                    <ComboBoxAutoComplete fx:id="cbxImpExp" prefHeight="25.0" prefWidth="239.0" GridPane.columnIndex="7" GridPane.rowIndex="3" />
+                                    <Button fx:id="btnAccesoImpExp" mnemonicParsing="false" onAction="#handleEditImpExp" prefHeight="26.0" prefWidth="28.0" GridPane.columnIndex="8" GridPane.rowIndex="3">
+                                       <graphic>
+                                          <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/anadir.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Label fx:id="lbllATA" focusTraversable="false" prefHeight="17.0" prefWidth="103.0" text="ATA / Transportista" GridPane.columnIndex="9" GridPane.rowIndex="3" />
+                                    <ComboBoxAutoComplete fx:id="cbxATA" prefHeight="25.0" prefWidth="239.0" GridPane.columnIndex="10" GridPane.rowIndex="3" />
+                                    <Button fx:id="btnAccesoATA" mnemonicParsing="false" onAction="#handleEditAta" prefHeight="26.0" prefWidth="29.0" GridPane.columnIndex="11" GridPane.rowIndex="3">
+                                       <graphic>
+                                          <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/anadir.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Label text="Operaciones Realizadas" GridPane.columnSpan="2" GridPane.rowIndex="5">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <CheckBox fx:id="chkSalidasPendientes" focusTraversable="false" mnemonicParsing="false" text="Salidas Pendientes" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+                                    <Button fx:id="btnBuscar" focusTraversable="false" mnemonicParsing="false" onAction="#handleBuscar" text="Buscar" GridPane.columnIndex="4" GridPane.rowIndex="5">
+                                    	<graphic>
+                                         <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                               <Image url="@../images/looking.png" />
+                                            </image>
+                                         </ImageView>
+                                        </graphic>                           
+                                    </Button>
+                                    <Label fx:id="lblContenedor" focusTraversable="false" prefHeight="17.0" prefWidth="73.0" text="Contenedor" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                                    <TextField fx:id="txtContenedor" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="7" GridPane.rowIndex="4" />
+                                    <Label fx:id="lblManifiesto" prefHeight="17.0" prefWidth="65.0" text="Manifiesto" GridPane.columnIndex="9" GridPane.rowIndex="4" />
+                                    <TextField fx:id="txtManifiesto" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="10" GridPane.rowIndex="4" />
+                                    <Label fx:id="lblDestinatario" focusTraversable="false" prefHeight="17.0" prefWidth="105.0" text="Cod. Destinatario" GridPane.columnIndex="6" GridPane.rowIndex="5" />
+                                    <TextField fx:id="txtDestinatario" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="7" GridPane.rowIndex="5" />
+                                    <Label fx:id="lblMercaderia" prefHeight="17.0" prefWidth="65.0" text="Mercaderia" GridPane.columnIndex="9" GridPane.rowIndex="5" />
+                                    <TextField fx:id="txtMercaderia" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="10" GridPane.rowIndex="5" />
+                                    <Label fx:id="lblTaraContenedor" prefHeight="17.0" prefWidth="91.0" text="Tara Contenedor" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                                    <TextField fx:id="txtTaraContenedor" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                    <Label fx:id="lblObservacionesAduana" focusTraversable="false" prefHeight="17.0" prefWidth="73.0" text="Obs. Aduana" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </Label>
+                                    <TextArea fx:id="txtObservacionesAduana" prefHeight="39.0" prefWidth="113.0" GridPane.columnIndex="3" GridPane.rowIndex="3" GridPane.rowSpan="2" />
+                                    <Label fx:id="lblFactura1" focusTraversable="false" prefHeight="17.0" prefWidth="109.0" text="Chasis" GridPane.rowIndex="1" />
+                                    <TextField fx:id="txtPatenteChasis" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Label fx:id="lblConductor1" focusTraversable="false" prefHeight="17.0" prefWidth="74.0" text="Nacionalidad" GridPane.columnIndex="9" />
+                                    <TextField fx:id="txtNacionalidad" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="10" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
+                                 </HBox.margin>
+                              </GridPane>
+                           </children>
+                        </HBox>
+                        <TableView fx:id="tblPesajes" onMouseClicked="#handleTblEntidadesSelected" prefHeight="283.0" prefWidth="1205.0">
+                          <columns>
+                            <TableColumn fx:id="colTransaccion" prefWidth="74.0" text="Transacción" />
+                            <TableColumn fx:id="colFecha" prefWidth="119.0" text="Fecha" />
+                              <TableColumn fx:id="colChasis" prefWidth="87.0" text="Patente" />                              
+                              <TableColumn fx:id="colEntrada" prefWidth="65.0" text="Entrada" />
+                              <TableColumn fx:id="colSalida" prefWidth="65.0" text="Salida" />
+                              <TableColumn fx:id="colNeto" prefWidth="65.0" text="Neto" />
+                              <TableColumn fx:id="colBalanza" prefWidth="121.0" text="Balanza" />
+                              <TableColumn fx:id="colProducto" prefWidth="121.0" text="Producto" />
+                              <TableColumn fx:id="colCliente" prefWidth="121.0" text="Cliente" />
+                              <TableColumn fx:id="colTransporte" prefWidth="121.0" text="Transporte" />
+                              <TableColumn fx:id="colProcedencia" prefWidth="121.0" text="Procedencia" />
+                              <TableColumn fx:id="colImpExp" prefWidth="121.0" text="Imp / Exp" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </VBox>
+               </children></AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

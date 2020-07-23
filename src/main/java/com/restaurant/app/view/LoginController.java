@@ -9,6 +9,7 @@ import com.restaurant.app.model.Usuarios;
 import com.restaurant.app.persistence.UsuariosPersistence;
 import com.restaurant.app.persistence.impl.jdbc.UsuariosPersistenceJdbc;
 import com.restaurant.app.utils.Message;
+import com.restaurant.app.utils.UtilView;
 import com.restaurant.app.utils.Utils;
 
 import javafx.event.Event;
@@ -77,6 +78,7 @@ public class LoginController implements Initializable, IView, EventHandler<Windo
 		    stage.setY(0);
 		    stage.setWidth(bounds.getWidth());
 		    stage.setHeight(bounds.getHeight());
+		    
 		    		    
 			try {
 				FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/PrincipalView.fxml"));

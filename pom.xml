@@ -234,5 +234,11 @@
 			<artifactId>JavaFxControls</artifactId>
 			<version>1.0.1</version>
 		</dependency>
+		<dependency>
+		  <groupId>de.saxsys</groupId>
+		  <artifactId>jfx-testrunner</artifactId>
+		  <version>1.2</version>
+		  <scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>

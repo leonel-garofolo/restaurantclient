@@ -18,6 +18,7 @@ import com.restaurant.app.model.Usuarios;
 import com.restaurant.app.persistence.ParametrosGlobalesPersistence;
 import com.restaurant.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
 import com.restaurant.app.utils.Message;
+import com.restaurant.app.utils.UtilView;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -67,17 +68,21 @@ public class PrincipalController implements Initializable, IView{
 	
 	@FXML
     private void handleUsuarios(ActionEvent event) {
-		this.openWindows("UsuariosView", "Usuarios");
+		UtilView.openWindows(this.getClass(), "UsuariosView", "Usuarios");
     }
 	
 	@FXML
     private void handleTara(ActionEvent event) {
+		UtilView.openWindows(this.getClass(), "POS", "Caja");
+		
+		/*
 		ParametrosGlobales transact = parametrosGlobalesPersistence.findById(ParametrosGlobales.P_EMPRESA_TRANSACCION);
 		if(transact != null) {
-			this.openWindows("PesarEntradaSalidaView", "Tara");
+			UtilView.openWindows(this.getClass(), "POS", "Caja");
 		} else {
 			Message.error("Para ingresar a la pantalla de Pesaje es requerido el campo 'Transaccion' en la pantalla de Sistemas.");
 		}
+		*/
     }
 	
 	@FXML
@@ -118,17 +123,17 @@ public class PrincipalController implements Initializable, IView{
 	
 	@FXML
     private void handleConfiguraciones(ActionEvent event) {
-		this.openWindows("ConfiguracionesView", "Configuraciones");
+		UtilView.openWindows(this.getClass(), "ConfiguracionesView", "Configuraciones");
     }
 	
 	@FXML
     private void handleInformes(ActionEvent event) {
-		this.openWindows("InformesView", "Informes");
+		UtilView.openWindows(this.getClass(), "InformesView", "Informes");
     }
 	
 	@FXML
     private void handleHerramientas(ActionEvent event) {
-		this.openWindows("HerramientasView", "Sistema");
+		UtilView.openWindows(this.getClass(), "HerramientasView", "Sistema");
     }
 	
 	@FXML
@@ -136,33 +141,6 @@ public class PrincipalController implements Initializable, IView{
 		System.exit(0);
     }
 	
-	private void openWindows(String fxmlName, String title) {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/" + fxmlName + ".fxml"));
-			Parent rootHerramientas = (Parent)loader.load();
-			Stage stage = new Stage();
-		    stage.initModality(Modality.APPLICATION_MODAL);
-		    stage.resizableProperty().setValue(Boolean.FALSE);
-		    stage.setTitle(title);
-		    /*
-		    Image ico = new Image(App.PATH_ICONO); 
-			stage.getIcons().add(ico);
-			*/ 
-		    Scene scene = new Scene(rootHerramientas);
-		    scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());
-		    stage.setScene(scene);  
-		    		    
-		    if(loader.getController() instanceof HerramientasController) {
-		    	IView controller = (HerramientasController)loader.getController();
-		    	controller.setStage(stage);
-		    }		    
-		    stage.show();
-		} catch (IOException e) {
-			logger.error(e);
-			e.printStackTrace();
-		}
-	}	
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {		
 		parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();

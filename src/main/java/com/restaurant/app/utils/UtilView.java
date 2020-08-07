@@ -7,8 +7,8 @@ import org.apache.log4j.Logger;
 import com.restaurant.app.view.HerramientasController;
 import com.restaurant.app.view.IPOSView;
 import com.restaurant.app.view.IView;
-import com.restaurant.app.view.POSView;
 import com.restaurant.app.view.PrincipalController;
+import com.restaurant.app.view.caja.POSView;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

@@ -2,7 +2,7 @@
 
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.app.view.POSView">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.app.view.caja.POSView">
 	<!-- TODO Add Nodes -->
 </AnchorPane>
 

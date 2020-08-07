@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.restaurant.app.utils.UtilView;
+import com.restaurant.app.view.caja.POSView;
 
 import de.saxsys.javafx.test.JfxRunner;
 import javafx.application.Platform;

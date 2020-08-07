@@ -1,10 +1,12 @@
-package com.restaurant.app.view;
+package com.restaurant.app.view.caja;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.restaurant.app.utils.UtilView;
+import com.restaurant.app.view.IPOSView;
+import com.restaurant.app.view.IView;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;

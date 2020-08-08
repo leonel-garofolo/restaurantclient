@@ -18,7 +18,11 @@ linear-gradient(to bottom, derive(-fx-base,+50%), derive(-fx-base,-40%), derive(
 }
  
 .button {
--fx-background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.button-active {
+    -fx-background-color: #98ff98;
 }
  
 .button:hover {
@@ -29,6 +33,14 @@ linear-gradient(to bottom, derive(-fx-base,+50%), derive(-fx-base,-40%), derive(
 .table-view {
 -fx-table-cell-border-color:derive(-fx-base,+10%);
 -fx-table-header-border-color:derive(-fx-base,+20%);
+}
+
+.table-row-cell {
+    -fx-cell-size: 50px;
+}
+
+.table-column {
+  -fx-alignment: CENTER;
 }
  
 .split-pane:horizontal > * > .split-pane-divider {

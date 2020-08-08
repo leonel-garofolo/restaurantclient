@@ -74,7 +74,7 @@ public class LineaDeVentaPersistenceJdbc extends GenericJdbcDAO<LineaDeVenta> im
 		//--- Set PRIMARY KEY and DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		setValue(ps, i++, lineaDeVenta.getId() ) ; // "id" : java.lang.Integer
 		setValue(ps, i++, lineaDeVenta.getVentaId() ) ; // "venta_id" : java.lang.Integer
-		setValue(ps, i++, lineaDeVenta.getPrecio() ) ; // "precio" : java.math.BigDecimal
+		setValue(ps, i++, lineaDeVenta.getSubTotal() ) ; // "precio" : java.math.BigDecimal
 		setValue(ps, i++, lineaDeVenta.getProductoId() ) ; // "producto_id" : java.lang.Integer
 	}
 
@@ -82,7 +82,7 @@ public class LineaDeVentaPersistenceJdbc extends GenericJdbcDAO<LineaDeVenta> im
 	@Override
 	protected void setValuesForUpdate(PreparedStatement ps, int i, LineaDeVenta lineaDeVenta) throws SQLException {
 		//--- Set DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
-		setValue(ps, i++, lineaDeVenta.getPrecio() ) ; // "precio" : java.math.BigDecimal
+		setValue(ps, i++, lineaDeVenta.getSubTotal() ) ; // "precio" : java.math.BigDecimal
 		setValue(ps, i++, lineaDeVenta.getProductoId() ) ; // "producto_id" : java.lang.Integer
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
 		setValue(ps, i++, lineaDeVenta.getId() ) ; // "id" : java.lang.Integer
@@ -118,8 +118,8 @@ public class LineaDeVentaPersistenceJdbc extends GenericJdbcDAO<LineaDeVenta> im
 		if ( rs.wasNull() ) { lineaDeVenta.setId(null); }; // not primitive number => keep null value if any
 		lineaDeVenta.setVentaId(rs.getLong("venta_id")); // java.lang.Integer
 		if ( rs.wasNull() ) { lineaDeVenta.setVentaId(null); }; // not primitive number => keep null value if any
-		lineaDeVenta.setPrecio(rs.getBigDecimal("precio")); // java.math.BigDecimal
-		if ( rs.wasNull() ) { lineaDeVenta.setPrecio(null); }; // not primitive number => keep null value if any
+		lineaDeVenta.setSubTotal(rs.getBigDecimal("precio")); // java.math.BigDecimal
+		if ( rs.wasNull() ) { lineaDeVenta.setSubTotal(null); }; // not primitive number => keep null value if any
 		lineaDeVenta.setProductoId(rs.getInt("producto_id")); // java.lang.Integer
 		if ( rs.wasNull() ) { lineaDeVenta.setProductoId(null); }; // not primitive number => keep null value if any
 		return lineaDeVenta ;

@@ -24,8 +24,11 @@ public class LineaDeVenta implements Serializable
     private Long id ; // Integer // Id or Primary Key
     private Long ventaId ; // Integer // Id or Primary Key
 
-    private BigDecimal precio ;  // BigDecimal 
-    private Integer productoId ;  // Integer 
+    private BigDecimal subTotal;  // BigDecimal
+    private Integer productoId ;  // Integer
+    private Productos producto;
+    private Integer cant;
+    private Double desc;
 
     /**
      * Default constructor
@@ -72,18 +75,18 @@ public class LineaDeVenta implements Serializable
 	/**
      * Set the "precio" field value
      * This field is mapped on the database column "precio" ( type "DECIMAL", NotNull : true ) 
-     * @param precio
+     * @param subTotal
      */
-    public void setPrecio( BigDecimal precio ) {
-        this.precio = precio;
+    public void setSubTotal(BigDecimal subTotal) {
+        this.subTotal = subTotal;
     }
     /**
      * Get the "precio" field value
      * This field is mapped on the database column "precio" ( type "DECIMAL", NotNull : true ) 
      * @return the field value
      */
-    public BigDecimal getPrecio() {
-        return this.precio;
+    public BigDecimal getSubTotal() {
+        return this.subTotal;
     }
 
     /**
@@ -103,6 +106,30 @@ public class LineaDeVenta implements Serializable
         return this.productoId;
     }
 
+    public Productos getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Productos producto) {
+        this.producto = producto;
+    }
+
+    public Integer getCant() {
+        return cant;
+    }
+
+    public void setCant(Integer cant) {
+        this.cant = cant;
+    }
+
+    public Double getDesc() {
+        return desc;
+    }
+
+    public void setDesc(Double desc) {
+        this.desc = desc;
+    }
+
     //----------------------------------------------------------------------
     // toString METHOD
     //----------------------------------------------------------------------
@@ -113,7 +140,7 @@ public class LineaDeVenta implements Serializable
         sb.append("|");
         sb.append(ventaId);
         sb.append("|");
-        sb.append(precio);
+        sb.append(subTotal);
         sb.append("|");
         sb.append(productoId);
         return sb.toString(); 

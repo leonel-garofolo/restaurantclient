@@ -43,9 +43,11 @@ public class POSView extends AnchorPane implements Initializable, IPOSView {
 			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/Caja.fxml"));
 			Parent rootPrincipal = (Parent)loader.load();				
 			IView controller = (CajaController)loader.getController();
-	    	controller.setStage(stage);		    			    	
-			
-	    	stage.setScene(new Scene(rootPrincipal));	    	
+	    	controller.setStage(stage);
+
+	    	Scene scene = new Scene(rootPrincipal);
+			scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());
+			stage.setScene(scene);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}	

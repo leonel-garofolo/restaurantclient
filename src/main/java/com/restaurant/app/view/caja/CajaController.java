@@ -4,7 +4,9 @@ import com.restaurant.app.model.LineaDeVenta;
 import com.restaurant.app.model.Productos;
 import com.restaurant.app.persistence.ProductosPersistence;
 import com.restaurant.app.persistence.impl.jdbc.ProductosPersistenceJdbc;
+import com.restaurant.app.utils.Message;
 import com.restaurant.app.view.IView;
+import com.restaurant.app.view.PrincipalController;
 import javafx.beans.value.ObservableValueBase;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -15,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -23,12 +26,12 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class CajaController extends AnchorPane implements Initializable, IView {
+	final static Logger logger = Logger.getLogger(CajaController.class);
 
 	private enum OPERACIONES{
 		OP_CANTIDAD,
 		OP_DESCUENTO,
-		OP_PRECIO,
-		OP_ELIMINAR
+		OP_PRECIO
 	}
 	
 	private OPERACIONES currentOp;
@@ -44,11 +47,11 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 	@FXML
 	private TableColumn<LineaDeVenta, String> colProductoNombre;
 	@FXML
-	private TableColumn<LineaDeVenta, Integer> colProductoCant;
+	private TableColumn<LineaDeVenta, String> colProductoCant;
 	@FXML
 	private TableColumn<LineaDeVenta, Double> colProductoPrecio;
 	@FXML
-	private TableColumn<LineaDeVenta, Double> colProductoDesc;
+	private TableColumn<LineaDeVenta, String> colProductoDesc;
 	@FXML
 	private TableColumn<LineaDeVenta, Double> colProductoSubTotal;
 
@@ -70,6 +73,7 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		this.user = "Leonel";
 		this.perfil = "";
 		currentOp = OPERACIONES.OP_CANTIDAD;
+		btnPrecio.setVisible(false);
 
 		productosPersistence = new ProductosPersistenceJdbc();
 		colProductoNombre.setCellValueFactory(cellData -> new ObservableValueBase<String>() {
@@ -80,10 +84,10 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 			}
 		});
 
-		colProductoCant.setCellValueFactory(cellData -> new ObservableValueBase<Integer>() {
+		colProductoCant.setCellValueFactory(cellData -> new ObservableValueBase<String>() {
 
 			@Override
-			public Integer getValue() {
+			public String getValue() {
 				return cellData.getValue().getCant();
 			}
 
@@ -96,11 +100,11 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 			}
 		});
 
-		colProductoDesc.setCellValueFactory(cellData -> new ObservableValueBase<Double>() {
+		colProductoDesc.setCellValueFactory(cellData -> new ObservableValueBase<String>() {
 
 			@Override
-			public Double getValue() {
-				return cellData.getValue().getDesc();
+			public String getValue() {
+				return (cellData.getValue().getDesc() == null? "":cellData.getValue().getDesc().toString()).split(".0")[0];
 			}
 		});
 
@@ -120,57 +124,57 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 	
 	@FXML
 	public void handleBtn1(Event e) {
-		operationItem(1);
+		operationItem("1");
 	}
 	
 	@FXML
 	public void handleBtn2(Event e) {
-		operationItem(2);
+		operationItem("2");
 	}
 	
 	@FXML
 	public void handleBtn3(Event e) {
-		operationItem(3);	
+		operationItem("3");
 	}
 	
 	@FXML
 	public void handleBtn4(Event e) {
-		operationItem(4);
+		operationItem("4");
 	}
 	
 	@FXML
 	public void handleBtn5(Event e) {
-		operationItem(5);
+		operationItem("5");
 	}
 
 	@FXML
 	public void handleBtn6(Event e) {
-		operationItem(6);
+		operationItem("6");
 	}
 	
 	@FXML
 	public void handleBtn7(Event e) {
-		operationItem(7);
+		operationItem("7");
 	}
 	
 	@FXML
 	public void handleBtn8(Event e) {
-		operationItem(8);
+		operationItem("8");
 	}
 	
 	@FXML
 	public void handleBtn9(Event e) {
-		operationItem(9);
+		operationItem("9");
 	}
 	
 	@FXML
 	public void handleBtn0(Event e) {
-		operationItem(0);
+		operationItem("0");
 	}
 	
 	@FXML
 	public void handleBtnComa(Event e) {
-		operationItem(null);
+		operationItem(".");
 	}
 	
 	@FXML
@@ -181,7 +185,22 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 
 	@FXML
 	public void handleBtnDelete(Event e) {
-		currentOp = OPERACIONES.OP_ELIMINAR;
+		operationItem(null);
+
+		if(currentOp == OPERACIONES.OP_CANTIDAD) {
+			if(tblProductos.getSelectionModel().getSelectedItem().getCant().length() >1)
+				tblProductos.getSelectionModel().getSelectedItem().setCant(tblProductos.getSelectionModel().getSelectedItem().getCant().substring(0, tblProductos.getSelectionModel().getSelectedItem().getCant().length() - 1));
+			else
+				tblProductos.getSelectionModel().getSelectedItem().setCant("0");
+			calculateSubtotal(tblProductos.getSelectionModel().getSelectedItem(), null, null);
+		}
+		else if(currentOp == OPERACIONES.OP_DESCUENTO) {
+			if(tblProductos.getSelectionModel().getSelectedItem().getDesc().length() >1)
+				tblProductos.getSelectionModel().getSelectedItem().setDesc(tblProductos.getSelectionModel().getSelectedItem().getDesc().substring(0, tblProductos.getSelectionModel().getSelectedItem().getDesc().length() - 1));
+			else
+				tblProductos.getSelectionModel().getSelectedItem().setDesc("");
+			calculateSubtotal(tblProductos.getSelectionModel().getSelectedItem(), null, null);
+		}
 	}
 
 	@FXML
@@ -198,7 +217,12 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 	
 	@FXML
 	public void handleBtnPagar(Event e) {
-		
+		if(tblProductos.getItems().isEmpty()){
+			Message.error("Es necesario tener cargado al menos un producto.");
+		} else {
+
+		}
+
 	}
 	
 	@FXML
@@ -208,7 +232,11 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 	
 	@FXML
 	public void handleBtnPedir(Event e) {
-		
+		if(tblProductos.getItems().isEmpty()){
+			Message.error("Es necesario tener cargado al menos un producto.");
+		} else {
+
+		}
 	}
 
 	@FXML
@@ -234,8 +262,8 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 				for(LineaDeVenta lineaTemp: tblProductos.getItems()){
 					if(lineaTemp.getProductoId().longValue() == pNewTemp.getId().longValue()){
 						exist = true;
-						lineaTemp.setCant(lineaTemp.getCant() + 1);
-						lineaTemp.setSubTotal(new BigDecimal(pNewTemp.getPrecio().doubleValue() * lineaTemp.getCant().intValue()));
+						lineaTemp.setCant(String.valueOf(Integer.valueOf(lineaTemp.getCant()).intValue() + 1));
+						lineaTemp.setSubTotal(new BigDecimal(pNewTemp.getPrecio().doubleValue() * Integer.valueOf(lineaTemp.getCant()).intValue()));
 						break;
 					}
 				}
@@ -244,7 +272,7 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 					LineaDeVenta lineaDeVenta  = new LineaDeVenta();
 					lineaDeVenta.setProductoId(pNewTemp.getId().intValue());
 					lineaDeVenta.setProducto(pNewTemp);
-					lineaDeVenta.setCant(1);
+					lineaDeVenta.setCant("1");
 					lineaDeVenta.setSubTotal(new BigDecimal(pNewTemp.getPrecio().doubleValue()));
 					tblProductos.getItems().add(lineaDeVenta);
 					tblProductos.getSelectionModel().select(lineaDeVenta);
@@ -276,32 +304,58 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		tPanePedidos.getTabs().add(t);
 	}
 	
-	private void operationItem(Integer valor) {
-		btnCant.getStyleClass().removeAll("button-active");
-		btnDesc.getStyleClass().removeAll("button-active");
-		btnPrecio.getStyleClass().removeAll("button-active");
+	private void operationItem(String valor) {
+		if(!tblProductos.getItems().isEmpty()){
+			btnCant.getStyleClass().removeAll("button-active");
+			btnDesc.getStyleClass().removeAll("button-active");
+			btnPrecio.getStyleClass().removeAll("button-active");
 
-		switch (currentOp) {
-		case OP_CANTIDAD:
-			btnCant.getStyleClass().add("button-active");
-			tblProductos.getSelectionModel().getSelectedItem().setCant(valor);
-			break;
-		case OP_DESCUENTO:
-			btnDesc.getStyleClass().add("button-active");
+			switch (currentOp) {
+				case OP_CANTIDAD:
+					btnCant.getStyleClass().add("button-active");
+					if(valor != null)
+						calculateSubtotal(tblProductos.getSelectionModel().getSelectedItem(), valor, null);
+					break;
+				case OP_DESCUENTO:
+					btnDesc.getStyleClass().add("button-active");
+					if(valor != null)
+						calculateSubtotal(tblProductos.getSelectionModel().getSelectedItem(), null, valor);
+					break;
+				case OP_PRECIO:
+					btnPrecio.getStyleClass().add("button-active");
 
-			break;
-		case OP_PRECIO:
-			btnPrecio.getStyleClass().add("button-active");
-			tblProductos.getSelectionModel().getSelectedItem().setDesc(valor.doubleValue());
-			break;
-		case OP_ELIMINAR:
-			
-			break;
-			
-		default: //coma
-			
-			break;
+					break;
+
+				default: //coma
+					break;
+			}
+			tblProductos.refresh();
 		}
-		tblProductos.refresh();
+	}
+
+	private void calculateSubtotal(final LineaDeVenta currentLinea, final String cant, final String desc){
+		String sCurrentDesc = "";
+		if(desc != null){
+			if(desc.contains(".")){
+				if(!currentLinea.getDesc().contains("."))
+					sCurrentDesc = currentLinea.getDesc() + ".";
+			} else {
+				sCurrentDesc = (currentLinea.getDesc() != null ? currentLinea.getDesc() : "") + desc;
+			}
+		} else if(currentLinea.getDesc() != null)
+			sCurrentDesc = currentLinea.getDesc();
+
+		final String currentCant = (cant == null? currentLinea.getCant() : (currentLinea.getCant().equals("0")? "" : currentLinea.getCant()) + (cant == "." ? "":cant));
+		final double currentDesc = sCurrentDesc.equals("")? 0d: Double.valueOf(sCurrentDesc);
+		final double precio = (Integer.valueOf(currentCant).intValue() * currentLinea.getProducto().getPrecio().doubleValue());
+		final double subtotal = precio - ((precio * currentDesc) / 100 );
+
+		BigDecimal bd = BigDecimal.valueOf(subtotal);
+		bd = bd.setScale(3, RoundingMode.HALF_UP);
+		currentLinea.setCant(currentCant);
+		if(!sCurrentDesc.equals("0")){
+			currentLinea.setDesc(sCurrentDesc);
+		}
+		currentLinea.setSubTotal(new BigDecimal(bd.doubleValue()));
 	}
 }

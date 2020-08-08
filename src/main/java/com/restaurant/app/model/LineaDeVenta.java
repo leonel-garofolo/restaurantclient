@@ -27,8 +27,8 @@ public class LineaDeVenta implements Serializable
     private BigDecimal subTotal;  // BigDecimal
     private Integer productoId ;  // Integer
     private Productos producto;
-    private Integer cant;
-    private Double desc;
+    private String cant;
+    private String desc;
 
     /**
      * Default constructor
@@ -114,19 +114,19 @@ public class LineaDeVenta implements Serializable
         this.producto = producto;
     }
 
-    public Integer getCant() {
+    public String getCant() {
         return cant;
     }
 
-    public void setCant(Integer cant) {
+    public void setCant(String cant) {
         this.cant = cant;
     }
 
-    public Double getDesc() {
+    public String getDesc() {
         return desc;
     }
 
-    public void setDesc(Double desc) {
+    public void setDesc(String desc) {
         this.desc = desc;
     }
 

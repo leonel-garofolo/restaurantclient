@@ -6,7 +6,6 @@ import com.restaurant.app.persistence.ProductosPersistence;
 import com.restaurant.app.persistence.impl.jdbc.ProductosPersistenceJdbc;
 import com.restaurant.app.utils.Message;
 import com.restaurant.app.view.IView;
-import com.restaurant.app.view.PrincipalController;
 import javafx.beans.value.ObservableValueBase;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -22,7 +21,9 @@ import org.apache.log4j.Logger;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class CajaController extends AnchorPane implements Initializable, IView {
@@ -39,9 +40,10 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 	private String user;
 	private String perfil;
 
+	private Map<String, List<LineaDeVenta>> ventasPreCargadas;
+
 	@FXML
 	private TabPane tPanePedidos;
-
 	@FXML
 	private TableView<LineaDeVenta> tblProductos;
 	@FXML
@@ -70,6 +72,7 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 
 	@Override
 	public void initialize(URL url, ResourceBundle resouces) {
+		this.ventasPreCargadas = new HashMap<>();
 		this.user = "Leonel";
 		this.perfil = "";
 		currentOp = OPERACIONES.OP_CANTIDAD;
@@ -241,6 +244,12 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 
 	@FXML
 	public void handleNewOrder(ActionEvent actionEvent) {
+		final String mesa = Message.addElement("Ingrese la mesa");
+		if(mesa == null){
+			handleNewOrder(actionEvent);
+		} else
+			saveLastOrderAndClear();
+
 		Tab t = new Tab();
 		ScrollPane sp = new ScrollPane();
 		GridPane gp = new GridPane();
@@ -299,9 +308,17 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 			countHorizontal++;
 		}
 		sp.setContent(gp);
-		t.setText("Nuevo Pedido");
+		t.setText(mesa);
 		t.setContent(sp);
 		tPanePedidos.getTabs().add(t);
+	}
+
+	private void saveLastOrderAndClear(){
+		if(!tPanePedidos.getTabs().isEmpty()){
+			ventasPreCargadas.put(tPanePedidos.getSelectionModel().getSelectedItem().getText(), tblProductos.getItems());
+			tblProductos.getItems().clear();
+			currentOp = OPERACIONES.OP_CANTIDAD;
+		}
 	}
 	
 	private void operationItem(String valor) {

@@ -227,6 +227,16 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		if(tblProductos.getItems().isEmpty()){
 			Message.error("Es necesario tener cargado al menos un producto.");
 		} else {
+
+		}
+
+	}
+	
+	@FXML
+	public void handleBtnPedir(Event e) {
+		if(tblProductos.getItems().isEmpty()){
+			Message.error("Es necesario tener cargado al menos un producto.");
+		} else {
 			CocinaDocument cocinaDocument = new CocinaDocument();
 			Header h = new Header();
 			h.setTitle("Cocina");
@@ -244,24 +254,6 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 
 			//print some stuff. Change the printer name to your thermal printer name.
 			printerService.printString("XP-58", "\n\n " + cocinaDocument.build() + " \n\n\n\n\n");
-			// cut that paper!
-			byte[] cutP = new byte[] { 0x1d, 'V', 1 };
-
-			printerService.printBytes("XP-58", cutP);
-		}
-
-	}
-	
-	@FXML
-	public void handleBtnPedir(Event e) {
-		if(tblProductos.getItems().isEmpty()){
-			Message.error("Es necesario tener cargado al menos un producto.");
-		} else {
-			PrinterService printerService = new PrinterService();
-			System.out.println(printerService.getPrinters());
-			//print some stuff. Change the printer name to your thermal printer name.
-			printerService.printString("XP-58", "\n\n testing testing 1 2 3eeeee \n\n\n\n\n");
-
 			// cut that paper!
 			byte[] cutP = new byte[] { 0x1d, 'V', 1 };
 

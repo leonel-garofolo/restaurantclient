@@ -1,6 +1,13 @@
 package com.restaurant.app.view.caja;
 
 import com.restaurant.app.model.Venta;
+import com.restaurant.app.persistence.VentaPersistence;
+import com.restaurant.app.persistence.impl.jdbc.VentaPersistenceJdbc;
+import com.restaurant.app.printer.pos.CocinaDocument;
+import com.restaurant.app.printer.pos.PrinterService;
+import com.restaurant.app.printer.pos.model.Detail;
+import com.restaurant.app.printer.pos.model.Footer;
+import com.restaurant.app.printer.pos.model.Header;
 import com.restaurant.app.view.IView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,13 +21,14 @@ import java.util.ResourceBundle;
 
 public class PagoController extends AnchorPane implements Initializable, IView {
     private Venta venta;
+    private VentaPersistence ventaPersistence;
 
     @FXML
     private TextField txtPago;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        this.ventaPersistence = new VentaPersistenceJdbc();
     }
 
     @Override
@@ -96,15 +104,42 @@ public class PagoController extends AnchorPane implements Initializable, IView {
 
     @FXML
     public void handleBtnImprimir(ActionEvent actionEvent) {
+        if(this.venta != null &&
+            venta.getFormaDePago() != null &&
+                venta.getImporte() != null){
+            ventaPersistence.save(venta);
+            printTicket();
+        }
+    }
 
+    private void printTicket(){
+        CocinaDocument cocinaDocument = new CocinaDocument();
+        Header h = new Header();
+        h.setTitle("Grun");
+        cocinaDocument.setHeader(h);
+        Detail d =new Detail();
+        cocinaDocument.setDetail(d);
+
+        Footer f = new Footer();
+        f.setNote("");
+        cocinaDocument.setFooter(f);
+
+        PrinterService printerService = new PrinterService();
+        System.out.println(printerService.getPrinters());
+
+        //print some stuff. Change the printer name to your thermal printer name.
+        printerService.printString("XP-58", "\n\n " + cocinaDocument.build() + " \n\n\n\n\n");
+        // cut that paper!
+        byte[] cutP = new byte[] { 0x1d, 'V', 1 };
+
+        printerService.printBytes("XP-58", cutP);
     }
 
     private void operarPago(String valor){
         if(Venta.FORMA_PAGO.E.toString().equals(venta.getFormaDePago())){
 
 
+
         }
     }
-
-
 }

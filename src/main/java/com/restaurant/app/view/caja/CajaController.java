@@ -236,7 +236,7 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 			cocinaDocument.setDetail(d);
 
 			Footer f = new Footer();
-			f.setNote("algo");
+			f.setNote("");
 			cocinaDocument.setFooter(f);
 
 			PrinterService printerService = new PrinterService();

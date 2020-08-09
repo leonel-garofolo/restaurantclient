@@ -47,7 +47,6 @@
                                        </font></Label>
                                     <HBox alignment="CENTER" prefHeight="44.0" prefWidth="321.0" spacing="50.0">
                                        <children>
-                                          <Button fx:id="btnNota" mnemonicParsing="false" onAction="#handleBtnNota" prefHeight="32.0" prefWidth="98.0" text="Nota" />
                                           <Button fx:id="btnPedir" mnemonicParsing="false" onAction="#handleBtnPedir" prefHeight="32.0" prefWidth="98.0" text="Pedir" />
                                           <Label contentDisplay="RIGHT" prefHeight="17.0" prefWidth="42.0" text="Mesa:" textAlignment="JUSTIFY" />
                                           <TextField prefHeight="33.0" prefWidth="104.0" />

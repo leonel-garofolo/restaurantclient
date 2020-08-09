@@ -4,6 +4,11 @@ import com.restaurant.app.model.LineaDeVenta;
 import com.restaurant.app.model.Productos;
 import com.restaurant.app.persistence.ProductosPersistence;
 import com.restaurant.app.persistence.impl.jdbc.ProductosPersistenceJdbc;
+import com.restaurant.app.printer.pos.CocinaDocument;
+import com.restaurant.app.printer.pos.PrinterService;
+import com.restaurant.app.printer.pos.model.Detail;
+import com.restaurant.app.printer.pos.model.Footer;
+import com.restaurant.app.printer.pos.model.Header;
 import com.restaurant.app.utils.Message;
 import com.restaurant.app.view.IView;
 import javafx.beans.value.ObservableValueBase;
@@ -14,7 +19,9 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
@@ -220,14 +227,29 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		if(tblProductos.getItems().isEmpty()){
 			Message.error("Es necesario tener cargado al menos un producto.");
 		} else {
+			CocinaDocument cocinaDocument = new CocinaDocument();
+			Header h = new Header();
+			h.setTitle("Cocina");
+			h.setMesa(tPanePedidos.getSelectionModel().getSelectedItem().getText());
+			cocinaDocument.setHeader(h);
+			Detail d =new Detail();
+			cocinaDocument.setDetail(d);
 
+			Footer f = new Footer();
+			f.setNote("algo");
+			cocinaDocument.setFooter(f);
+
+			PrinterService printerService = new PrinterService();
+			System.out.println(printerService.getPrinters());
+
+			//print some stuff. Change the printer name to your thermal printer name.
+			printerService.printString("XP-58", "\n\n " + cocinaDocument.build() + " \n\n\n\n\n");
+			// cut that paper!
+			byte[] cutP = new byte[] { 0x1d, 'V', 1 };
+
+			printerService.printBytes("XP-58", cutP);
 		}
 
-	}
-	
-	@FXML
-	public void handleBtnNota(Event e) {
-		
 	}
 	
 	@FXML
@@ -235,7 +257,15 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		if(tblProductos.getItems().isEmpty()){
 			Message.error("Es necesario tener cargado al menos un producto.");
 		} else {
+			PrinterService printerService = new PrinterService();
+			System.out.println(printerService.getPrinters());
+			//print some stuff. Change the printer name to your thermal printer name.
+			printerService.printString("XP-58", "\n\n testing testing 1 2 3eeeee \n\n\n\n\n");
 
+			// cut that paper!
+			byte[] cutP = new byte[] { 0x1d, 'V', 1 };
+
+			printerService.printBytes("XP-58", cutP);
 		}
 	}
 
@@ -248,7 +278,9 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		lblTotal.setText("Total: 0");
 
 		Tab t = new Tab();
+		BorderPane borderPane = new BorderPane();
 		ScrollPane sp = new ScrollPane();
+		borderPane.setCenter(sp);
 		GridPane gp = new GridPane();
 		gp.setHgap(5);
 		gp.setVgap(5);
@@ -298,8 +330,17 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 			countHorizontal++;
 		}
 		sp.setContent(gp);
+
+		//Nota en bottom
+		VBox vNote = new VBox();
+		vNote.getChildren().add(new Label("Nota:"));
+		TextArea note = new TextArea();
+		note.setMinHeight(10);
+		vNote.getChildren().add(note);
+		borderPane.setBottom(vNote);
+
 		t.setText(mesa);
-		t.setContent(sp);
+		t.setContent(borderPane);
 		t.setOnSelectionChanged (e -> {
 				if(t.isSelected()){
 					tblProductos.getItems().clear();

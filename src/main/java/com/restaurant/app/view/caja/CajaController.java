@@ -21,10 +21,7 @@ import org.apache.log4j.Logger;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class CajaController extends AnchorPane implements Initializable, IView {
 	final static Logger logger = Logger.getLogger(CajaController.class);
@@ -107,7 +104,7 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 
 			@Override
 			public String getValue() {
-				return (cellData.getValue().getDesc() == null? "":cellData.getValue().getDesc().toString()).split(".0")[0];
+			return (cellData.getValue().getDesc() == null? "":cellData.getValue().getDesc());
 			}
 		});
 
@@ -247,8 +244,8 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		final String mesa = Message.addElement("Ingrese la mesa");
 		if(mesa == null){
 			handleNewOrder(actionEvent);
-		} else
-			saveLastOrderAndClear();
+		}
+		lblTotal.setText("Total: 0");
 
 		Tab t = new Tab();
 		ScrollPane sp = new ScrollPane();
@@ -288,14 +285,7 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 				} else
 					tblProductos.refresh();
 
-				//calcular el total
-				double total = 0;
-				for(LineaDeVenta lineaTemp: tblProductos.getItems()){
-					total = total + lineaTemp.getSubTotal().doubleValue();
-				}
-				BigDecimal bd = BigDecimal.valueOf(total);
-				bd = bd.setScale(3, RoundingMode.HALF_UP);
-				lblTotal.setText("Total: " + bd.doubleValue());
+				calculateTotal(tblProductos.getItems());
 			});
 			b.setMinHeight(100);
 			b.setMinWidth(100);
@@ -310,12 +300,32 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		sp.setContent(gp);
 		t.setText(mesa);
 		t.setContent(sp);
+		t.setOnSelectionChanged (e -> {
+				if(t.isSelected()){
+					tblProductos.getItems().clear();
+					if(ventasPreCargadas.containsKey(t.getText())){
+						tblProductos.getItems().addAll(ventasPreCargadas.get(t.getText()));
+						tblProductos.refresh();
+						calculateTotal(tblProductos.getItems());
+					}
+				} else {
+					saveLastOrderAndClear();
+				}
+			}
+		);
 		tPanePedidos.getTabs().add(t);
+		tPanePedidos.getSelectionModel().select(t);
 	}
 
 	private void saveLastOrderAndClear(){
 		if(!tPanePedidos.getTabs().isEmpty()){
-			ventasPreCargadas.put(tPanePedidos.getSelectionModel().getSelectedItem().getText(), tblProductos.getItems());
+			if(ventasPreCargadas.containsKey(tPanePedidos.getSelectionModel().getSelectedItem().getText())){
+				ventasPreCargadas.remove(tPanePedidos.getSelectionModel().getSelectedItem().getText());
+			}
+			List<LineaDeVenta> ventas= new ArrayList<>();
+			ventas.addAll(tblProductos.getItems());
+			logger.info("save: " + tPanePedidos.getSelectionModel().getSelectedItem().getText() + " caunt " + ventas.size());
+			ventasPreCargadas.put(tPanePedidos.getSelectionModel().getSelectedItem().getText(), ventas);
 			tblProductos.getItems().clear();
 			currentOp = OPERACIONES.OP_CANTIDAD;
 		}
@@ -374,5 +384,16 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 			currentLinea.setDesc(sCurrentDesc);
 		}
 		currentLinea.setSubTotal(new BigDecimal(bd.doubleValue()));
+	}
+
+	private void calculateTotal(List<LineaDeVenta> ventas){
+		//calcular el total
+		double total = 0;
+		for(LineaDeVenta lineaTemp: ventas){
+			total = total + lineaTemp.getSubTotal().doubleValue();
+		}
+		BigDecimal bd = BigDecimal.valueOf(total);
+		bd = bd.setScale(3, RoundingMode.HALF_UP);
+		lblTotal.setText("Total: " + bd.doubleValue());
 	}
 }

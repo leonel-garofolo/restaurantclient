@@ -73,14 +73,14 @@ DROP TABLE IF EXISTS `linea_de_venta`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `linea_de_venta` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `venta_id` int(11) NOT NULL,
   `precio` decimal(9,2) NOT NULL,
   `producto_id` int(11) NOT NULL,
   PRIMARY KEY (`id`,`venta_id`),
   KEY `FK_linea_producto_idx` (`producto_id`),
   CONSTRAINT `FK_linea_producto` FOREIGN KEY (`producto_id`) REFERENCES `producto` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -89,6 +89,7 @@ CREATE TABLE `linea_de_venta` (
 
 LOCK TABLES `linea_de_venta` WRITE;
 /*!40000 ALTER TABLE `linea_de_venta` DISABLE KEYS */;
+INSERT INTO `linea_de_venta` VALUES (13,24,20.50,1),(14,26,20.50,1),(15,27,20.50,1),(16,27,24.00,2),(17,28,20.50,1),(18,29,41.00,1);
 /*!40000 ALTER TABLE `linea_de_venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -185,8 +186,10 @@ CREATE TABLE `venta` (
   `importe` decimal(9,2) DEFAULT NULL,
   `forma_de_pago` varchar(45) DEFAULT NULL,
   `vuelto` decimal(9,2) DEFAULT NULL,
+  `pagado` tinyint(1) DEFAULT NULL,
+  `mesa` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -195,6 +198,7 @@ CREATE TABLE `venta` (
 
 LOCK TABLES `venta` WRITE;
 /*!40000 ALTER TABLE `venta` DISABLE KEYS */;
+INSERT INTO `venta` VALUES (25,'2020-08-09 23:29:20',NULL,NULL,NULL,NULL,'12'),(26,'2020-08-09 23:30:21',20.50,NULL,NULL,NULL,'12'),(27,'2020-08-09 23:30:43',44.50,'T',NULL,NULL,'121'),(28,'2020-08-09 23:32:44',20.50,'T',NULL,NULL,'121'),(29,'2020-08-10 08:23:59',41.00,'T',0.00,1,'MES1'),(30,'2020-08-10 09:00:47',NULL,NULL,NULL,0,'MESALEONEL'),(31,'2020-08-10 09:01:35',NULL,NULL,NULL,0,'MESAVANE');
 /*!40000 ALTER TABLE `venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -232,4 +236,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-08-07 13:13:55
+-- Dump completed on 2020-08-10  9:09:03

@@ -5,16 +5,15 @@
 
 package com.restaurant.app.persistence.impl.jdbc;
 
+import com.restaurant.app.model.Venta;
+import com.restaurant.app.persistence.VentaPersistence;
+import com.restaurant.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
+
+import javax.inject.Named;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-
-import javax.inject.Named;
-
-import com.restaurant.app.model.Venta;
-import com.restaurant.app.persistence.VentaPersistence;
-import com.restaurant.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 
 /**
  * Venta persistence implementation 
@@ -26,16 +25,16 @@ import com.restaurant.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 public class VentaPersistenceJdbc extends GenericJdbcDAO<Venta> implements VentaPersistence {
 
 	private final static String SQL_SELECT_ALL = 
-		"select id, fecha, importe, forma_de_pago, vuelto from venta"; 
+		"select id, fecha, importe, forma_de_pago, vuelto, mesa from venta";
 
 	private final static String SQL_SELECT = 
-		"select id, fecha, importe, forma_de_pago, vuelto from venta where id = ?";
+		"select id, fecha, importe, forma_de_pago, vuelto, mesa from venta where id = ?";
 
 	private final static String SQL_INSERT = 
-		"insert into venta ( fecha, importe, forma_de_pago, vuelto ) values ( ?, ?, ?, ? )";
+		"insert into venta ( fecha, importe, forma_de_pago, vuelto, mesa ) values ( ?, ?, ?, ?, ? )";
 
 	private final static String SQL_UPDATE = 
-		"update venta set fecha = ?, importe = ?, forma_de_pago = ?, vuelto = ? where id = ?";
+		"update venta set fecha = ?, importe = ?, forma_de_pago = ?, vuelto = ?, mesa = ? where id = ?";
 
 	private final static String SQL_DELETE = 
 		"delete from venta where id = ?";
@@ -76,6 +75,7 @@ public class VentaPersistenceJdbc extends GenericJdbcDAO<Venta> implements Venta
 		setValue(ps, i++, venta.getImporte() ) ; // "importe" : java.math.BigDecimal
 		setValue(ps, i++, venta.getFormaDePago() ) ; // "forma_de_pago" : java.lang.String
 		setValue(ps, i++, venta.getVuelto() ) ; // "vuelto" : java.math.BigDecimal
+		setValue(ps, i++, venta.getMesa() ) ;
 	}
 
     //----------------------------------------------------------------------
@@ -86,6 +86,7 @@ public class VentaPersistenceJdbc extends GenericJdbcDAO<Venta> implements Venta
 		setValue(ps, i++, venta.getImporte() ) ; // "importe" : java.math.BigDecimal
 		setValue(ps, i++, venta.getFormaDePago() ) ; // "forma_de_pago" : java.lang.String
 		setValue(ps, i++, venta.getVuelto() ) ; // "vuelto" : java.math.BigDecimal
+		setValue(ps, i++, venta.getMesa() ) ;
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
 		setValue(ps, i++, venta.getId() ) ; // "id" : java.lang.Integer
 	}
@@ -120,6 +121,7 @@ public class VentaPersistenceJdbc extends GenericJdbcDAO<Venta> implements Venta
 		if ( rs.wasNull() ) { venta.setImporte(null); }; // not primitive number => keep null value if any
 		venta.setFormaDePago(rs.getString("forma_de_pago")); // java.lang.String
 		venta.setVuelto(rs.getBigDecimal("vuelto")); // java.math.BigDecimal
+		venta.setMesa(rs.getString("mesa"));
 		if ( rs.wasNull() ) { venta.setVuelto(null); }; // not primitive number => keep null value if any
 		return venta ;
 	}
@@ -180,7 +182,8 @@ public class VentaPersistenceJdbc extends GenericJdbcDAO<Venta> implements Venta
 			super.doUpdate(venta);
 		}
 		else {
-			super.doInsert(venta);
+			Long key = super.doInsertAutoIncr(venta);
+			venta.setId(key);
 		}
 		return venta ;
 	}	

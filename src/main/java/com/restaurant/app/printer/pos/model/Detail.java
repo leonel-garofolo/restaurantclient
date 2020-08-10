@@ -5,6 +5,15 @@ import java.util.List;
 public class Detail {
 
     private List<Line> lines;
+    private String total;
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
+    }
 
     public List<Line> getLines() {
         return lines;

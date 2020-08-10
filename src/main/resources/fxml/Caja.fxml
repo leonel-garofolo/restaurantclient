@@ -41,10 +41,20 @@
                                       </columns>
                                     </TableView>
                                     <Line endX="495.0" startX="-100.0" />
-                                    <Label fx:id="lblTotal" alignment="CENTER" prefHeight="63.0" prefWidth="495.0" style="-fx-background-color: #FFFFFF;" text="Total:">
-                                       <font>
-                                          <Font size="36.0" />
-                                       </font></Label>
+                                    <HBox prefHeight="64.0" prefWidth="495.0">
+                                       <children>
+                                          <Label alignment="CENTER" prefHeight="63.0" prefWidth="313.0" style="-fx-background-color: #FFFFFF;" text="Total:">
+                                             <font>
+                                                <Font size="36.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="lblTotal" prefHeight="64.0" prefWidth="184.0" style="-fx-background-color: #FFFFFF;" text="Label">
+                                             <font>
+                                                <Font size="36.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
                                     <HBox alignment="CENTER" prefHeight="44.0" prefWidth="321.0" spacing="50.0">
                                        <children>
                                           <Button fx:id="btnPedir" mnemonicParsing="false" onAction="#handleBtnPedir" prefHeight="32.0" prefWidth="98.0" text="Pedir" />

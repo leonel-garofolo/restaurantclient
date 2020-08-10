@@ -10,6 +10,7 @@ import java.io.Serializable;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Java bean for entity "venta" <br>
@@ -36,7 +37,11 @@ public class Venta implements Serializable
     private BigDecimal importe ;  // BigDecimal 
     private String formaDePago ;  // String 
 
-    private BigDecimal vuelto ;  // BigDecimal 
+    private BigDecimal vuelto ;  // BigDecimal
+    private List<LineaDeVenta> lineaDeVentaList ;  // BigDecimal
+    private boolean pagado;
+    private String mesa;
+
 
     /**
      * Default constructor
@@ -127,6 +132,35 @@ public class Venta implements Serializable
      */
     public BigDecimal getVuelto() {
         return this.vuelto;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public List<LineaDeVenta> getLineaDeVentaList() {
+        return lineaDeVentaList;
+    }
+
+    public void setLineaDeVentaList(List<LineaDeVenta> lineaDeVentaList) {
+        this.lineaDeVentaList = lineaDeVentaList;
+    }
+
+
+    public boolean isPagado() {
+        return pagado;
+    }
+
+    public void setPagado(boolean pagado) {
+        this.pagado = pagado;
+    }
+
+    public String getMesa() {
+        return mesa;
+    }
+
+    public void setMesa(String mesa) {
+        this.mesa = mesa;
     }
 
     //----------------------------------------------------------------------

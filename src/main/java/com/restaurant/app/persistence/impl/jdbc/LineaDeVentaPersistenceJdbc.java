@@ -5,16 +5,13 @@
 
 package com.restaurant.app.persistence.impl.jdbc;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-
-import javax.inject.Named;
-
 import com.restaurant.app.model.LineaDeVenta;
 import com.restaurant.app.persistence.LineaDeVentaPersistence;
 import com.restaurant.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
+
+import javax.inject.Named;
+import java.sql.*;
+import java.util.List;
 
 /**
  * LineaDeVenta persistence implementation 
@@ -273,4 +270,19 @@ public class LineaDeVentaPersistenceJdbc extends GenericJdbcDAO<LineaDeVenta> im
 		return false;
 	}
 
+	@Override
+	public void cleanForVentaId(Long ventaId) {
+		Connection conn = null;
+		PreparedStatement st = null;
+		try{
+			conn = getConnection();
+			st = conn.prepareStatement("delete from linea_de_venta where venta_id = ?");
+			st.setLong(1, ventaId);
+			st.execute();
+		}catch (Exception e){
+			e.printStackTrace();
+		}finally {
+			closeConnection(conn, st);
+		}
+	}
 }

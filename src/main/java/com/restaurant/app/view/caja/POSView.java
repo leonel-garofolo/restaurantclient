@@ -1,27 +1,29 @@
 package com.restaurant.app.view.caja;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import com.restaurant.app.utils.UtilView;
+import com.restaurant.app.model.Venta;
 import com.restaurant.app.view.IPOSView;
-import com.restaurant.app.view.IView;
-
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 public class POSView extends AnchorPane implements Initializable, IPOSView {
 	
-	private AnchorPane cajaView;
+	private CajaController cajaController;
+	private PagoController pagoController;
+
 	private Stage stage;
+
+	private Map<String, Venta> ventas;
 
 	private String user;
 	private String perfil;	
@@ -41,9 +43,10 @@ public class POSView extends AnchorPane implements Initializable, IPOSView {
 	public void showFirstScene() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/Caja.fxml"));
-			Parent rootPrincipal = (Parent)loader.load();				
-			IView controller = (CajaController)loader.getController();
-	    	controller.setStage(stage);
+			Parent rootPrincipal = (Parent)loader.load();
+			this.cajaController = (CajaController)loader.getController();
+			cajaController.setStage(stage);
+			cajaController.setParent(this, ventas);
 
 	    	Scene scene = new Scene(rootPrincipal);
 			scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());
@@ -52,5 +55,31 @@ public class POSView extends AnchorPane implements Initializable, IPOSView {
 			e1.printStackTrace();
 		}	
 		
+	}
+
+	public void showFirstScene(Venta v) {
+		ventas.remove(String.valueOf(v.getId().longValue()));
+		showFirstScene();
+	}
+
+	public void showSecondScene(final Map<String, Venta> ventas, final Venta vApagar) {
+		this.ventas = ventas;
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/Pago.fxml"));
+			Parent rootPrincipal = (Parent)loader.load();
+			this.pagoController = (PagoController)loader.getController();
+			pagoController.setStage(stage);
+			pagoController.setParent(this);
+			pagoController.setVenta(vApagar);
+
+			Scene scene = new Scene(rootPrincipal);
+			scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());
+			stage.setScene(scene);
+			Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+			stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+			stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 }

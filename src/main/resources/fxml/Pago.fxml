@@ -18,7 +18,7 @@
          <left>
             <VBox alignment="TOP_CENTER" prefHeight="243.0" prefWidth="111.0" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="btnEfectivo" mnemonicParsing="false" prefHeight="45.0" prefWidth="110.0" text="Efectivo" />
+                  <Button fx:id="btnEfectivo" mnemonicParsing="false" onAction="#handleBtnEfectivo" prefHeight="45.0" prefWidth="110.0" text="Efectivo" />
                   <Button fx:id="btnTarjeta" mnemonicParsing="false" onAction="#handleBtnTarjeta" prefHeight="45.0" prefWidth="111.0" text="Tarjeta" />
                </children>
                <BorderPane.margin>

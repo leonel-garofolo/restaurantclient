@@ -5,19 +5,13 @@
 
 package com.restaurant.app.persistence.impl.jdbc.commons;
 
-import java.math.BigDecimal;
-import java.sql.Blob;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.LinkedList;
-import java.util.List;
+import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;
-
-import org.apache.log4j.Logger;
+import java.math.BigDecimal;
+import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Generic abstract class for basic JDBC DAO
@@ -233,7 +227,8 @@ public abstract class GenericJdbcDAO<T> {
 	 * Inserts the given bean in the database (SQL INSERT)
 	 * @param bean
 	 */
-	protected void doInsert(T bean) {		
+	protected void doInsert(T bean) {
+		long id = 0;
 		Connection conn = null;
 		try {
 			conn = getConnection();
@@ -241,7 +236,12 @@ public abstract class GenericJdbcDAO<T> {
 			//--- Call specific method to set the values to be inserted
 			setValuesForInsert(ps, INITIAL_POSITION, bean); 
 			//--- Execute SQL INSERT
-			ps.executeUpdate();			
+			ps.executeUpdate();
+			ResultSet rs = ps.getGeneratedKeys();
+			if (rs.next()){
+				id=rs.getLong(1);
+			}
+
 			ps.close();
 		} catch (SQLException e) {
 			logger.error(e);

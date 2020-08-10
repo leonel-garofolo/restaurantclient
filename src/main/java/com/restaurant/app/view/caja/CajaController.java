@@ -2,8 +2,13 @@ package com.restaurant.app.view.caja;
 
 import com.restaurant.app.model.LineaDeVenta;
 import com.restaurant.app.model.Productos;
+import com.restaurant.app.model.Venta;
+import com.restaurant.app.persistence.LineaDeVentaPersistence;
 import com.restaurant.app.persistence.ProductosPersistence;
+import com.restaurant.app.persistence.VentaPersistence;
+import com.restaurant.app.persistence.impl.jdbc.LineaDeVentaPersistenceJdbc;
 import com.restaurant.app.persistence.impl.jdbc.ProductosPersistenceJdbc;
+import com.restaurant.app.persistence.impl.jdbc.VentaPersistenceJdbc;
 import com.restaurant.app.printer.pos.CocinaDocument;
 import com.restaurant.app.printer.pos.PrinterService;
 import com.restaurant.app.printer.pos.model.Detail;
@@ -44,7 +49,8 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 	private String user;
 	private String perfil;
 
-	private Map<String, List<LineaDeVenta>> ventasPreCargadas;
+	private Map<String, Venta> ventas;
+	private POSView posView;
 
 	@FXML
 	private TabPane tPanePedidos;
@@ -73,16 +79,20 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 	private Label lblTotal;
 
 	private ProductosPersistence productosPersistence;
+	private VentaPersistence ventaPersistence;
+	private LineaDeVentaPersistence lineaDeVentaPersistence;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resouces) {
-		this.ventasPreCargadas = new HashMap<>();
+		this.ventas = new HashMap<>();
 		this.user = "Leonel";
 		this.perfil = "";
 		currentOp = OPERACIONES.OP_CANTIDAD;
 		btnPrecio.setVisible(false);
 
 		productosPersistence = new ProductosPersistenceJdbc();
+		ventaPersistence = new VentaPersistenceJdbc();
+		lineaDeVentaPersistence = new LineaDeVentaPersistenceJdbc();
 		colProductoNombre.setCellValueFactory(cellData -> new ObservableValueBase<String>() {
 
 			@Override
@@ -127,6 +137,30 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 	@Override
 	public void setStage(Stage stage) {
 		this.stage = stage;
+	}
+
+	public void setParent(POSView posView, Map<String, Venta> ventas){
+		this.posView = posView;
+		this.ventas = (ventas == null? new HashMap<>(): ventas);
+		if(ventas != null){
+			tPanePedidos.getTabs().clear();
+			Iterator<Map.Entry<String, Venta>> it = ventas.entrySet().iterator();
+			// iterating every set of entry in the HashMap.
+			while (it.hasNext()) {
+				Map.Entry<String, Venta> v = (Map.Entry<String, Venta>) it.next();
+				Tab t =new Tab();
+				t.setId(String.valueOf(v.getValue().getId()));
+				t.setText(v.getValue().getMesa());
+				tPanePedidos.getTabs().add(t);
+			}
+
+			if (tPanePedidos.getTabs().size() > 0) {
+				tPanePedidos.getSelectionModel().select(0);
+
+				tblProductos.getItems().addAll(ventas.get(tPanePedidos.getSelectionModel().getSelectedItem().getId()).getLineaDeVentaList());
+				tblProductos.refresh();
+			}
+		}
 	}
 	
 	@FXML
@@ -227,9 +261,9 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		if(tblProductos.getItems().isEmpty()){
 			Message.error("Es necesario tener cargado al menos un producto.");
 		} else {
-
+			saveLastOrderAndClear();
+			this.posView.showSecondScene(ventas, ventas.get(tPanePedidos.getSelectionModel().getSelectedItem().getId()));
 		}
-
 	}
 	
 	@FXML
@@ -267,7 +301,7 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		if(mesa == null){
 			handleNewOrder(actionEvent);
 		}
-		lblTotal.setText("Total: 0");
+		lblTotal.setText("0");
 
 		Tab t = new Tab();
 		BorderPane borderPane = new BorderPane();
@@ -331,14 +365,23 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		vNote.getChildren().add(note);
 		borderPane.setBottom(vNote);
 
+		Venta venta = new Venta();
+		venta.setMesa(mesa);
+		venta.setFecha(new Date());
+		venta = ventaPersistence.save(venta);
+		ventas.put(String.valueOf(venta.getId().longValue()), venta);
+		t.setId(String.valueOf(venta.getId()));
 		t.setText(mesa);
 		t.setContent(borderPane);
 		t.setOnSelectionChanged (e -> {
 				if(t.isSelected()){
 					tblProductos.getItems().clear();
-					if(ventasPreCargadas.containsKey(t.getText())){
-						tblProductos.getItems().addAll(ventasPreCargadas.get(t.getText()));
+					if(ventas.containsKey(t.getText())){
+						Venta v = ventas.get(t.getId());
+						tblProductos.getItems().addAll(v.getLineaDeVentaList());
 						tblProductos.refresh();
+						if(tblProductos.getItems().size() > 0) tblProductos.getSelectionModel().select(0);
+
 						calculateTotal(tblProductos.getItems());
 					}
 				} else {
@@ -352,13 +395,28 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 
 	private void saveLastOrderAndClear(){
 		if(!tPanePedidos.getTabs().isEmpty()){
-			if(ventasPreCargadas.containsKey(tPanePedidos.getSelectionModel().getSelectedItem().getText())){
-				ventasPreCargadas.remove(tPanePedidos.getSelectionModel().getSelectedItem().getText());
+			Venta venta;
+			if(ventas.containsKey(tPanePedidos.getSelectionModel().getSelectedItem().getId())){
+				venta = ventas.get(tPanePedidos.getSelectionModel().getSelectedItem().getId());
+			} else {
+				venta = new Venta();
 			}
-			List<LineaDeVenta> ventas= new ArrayList<>();
-			ventas.addAll(tblProductos.getItems());
-			logger.info("save: " + tPanePedidos.getSelectionModel().getSelectedItem().getText() + " caunt " + ventas.size());
-			ventasPreCargadas.put(tPanePedidos.getSelectionModel().getSelectedItem().getText(), ventas);
+			venta.setMesa(tPanePedidos.getSelectionModel().getSelectedItem().getText());
+			venta.setFecha(new Date());
+			venta.setImporte(new BigDecimal(Double.valueOf(lblTotal.getText())));
+			venta = ventaPersistence.save(venta);
+			lineaDeVentaPersistence.cleanForVentaId(venta.getId());
+
+			List<LineaDeVenta> lineaDeVentas = new ArrayList<>();
+			lineaDeVentas.addAll(tblProductos.getItems());
+			for(LineaDeVenta l : lineaDeVentas){
+				l.setVentaId(venta.getId());
+				lineaDeVentaPersistence.save(l);
+			}
+			venta.setLineaDeVentaList(lineaDeVentas);
+
+			logger.info("save: " + tPanePedidos.getSelectionModel().getSelectedItem().getId() + " caunt " + ventas.size());
+			ventas.put(tPanePedidos.getSelectionModel().getSelectedItem().getId(), venta);
 			tblProductos.getItems().clear();
 			currentOp = OPERACIONES.OP_CANTIDAD;
 		}
@@ -427,6 +485,6 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		}
 		BigDecimal bd = BigDecimal.valueOf(total);
 		bd = bd.setScale(3, RoundingMode.HALF_UP);
-		lblTotal.setText("Total: " + bd.doubleValue());
+		lblTotal.setText(String.valueOf(bd.doubleValue()));
 	}
 }

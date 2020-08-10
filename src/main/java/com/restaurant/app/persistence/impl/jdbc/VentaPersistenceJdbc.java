@@ -25,16 +25,16 @@ import java.util.List;
 public class VentaPersistenceJdbc extends GenericJdbcDAO<Venta> implements VentaPersistence {
 
 	private final static String SQL_SELECT_ALL = 
-		"select id, fecha, importe, forma_de_pago, vuelto, mesa from venta";
+		"select id, fecha, importe, forma_de_pago, vuelto, mesa, pagado from venta";
 
 	private final static String SQL_SELECT = 
-		"select id, fecha, importe, forma_de_pago, vuelto, mesa from venta where id = ?";
+		"select id, fecha, importe, forma_de_pago, vuelto, mesa, pagado from venta where id = ?";
 
 	private final static String SQL_INSERT = 
-		"insert into venta ( fecha, importe, forma_de_pago, vuelto, mesa ) values ( ?, ?, ?, ?, ? )";
+		"insert into venta ( fecha, importe, forma_de_pago, vuelto, mesa, pagado ) values ( ?, ?, ?, ?, ?, ? )";
 
 	private final static String SQL_UPDATE = 
-		"update venta set fecha = ?, importe = ?, forma_de_pago = ?, vuelto = ?, mesa = ? where id = ?";
+		"update venta set fecha = ?, importe = ?, forma_de_pago = ?, vuelto = ?, mesa = ?, pagado = ? where id = ?";
 
 	private final static String SQL_DELETE = 
 		"delete from venta where id = ?";
@@ -76,6 +76,7 @@ public class VentaPersistenceJdbc extends GenericJdbcDAO<Venta> implements Venta
 		setValue(ps, i++, venta.getFormaDePago() ) ; // "forma_de_pago" : java.lang.String
 		setValue(ps, i++, venta.getVuelto() ) ; // "vuelto" : java.math.BigDecimal
 		setValue(ps, i++, venta.getMesa() ) ;
+		setValue(ps, i++, venta.isPagado() ) ;
 	}
 
     //----------------------------------------------------------------------
@@ -87,6 +88,7 @@ public class VentaPersistenceJdbc extends GenericJdbcDAO<Venta> implements Venta
 		setValue(ps, i++, venta.getFormaDePago() ) ; // "forma_de_pago" : java.lang.String
 		setValue(ps, i++, venta.getVuelto() ) ; // "vuelto" : java.math.BigDecimal
 		setValue(ps, i++, venta.getMesa() ) ;
+		setValue(ps, i++, venta.isPagado() ) ;
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
 		setValue(ps, i++, venta.getId() ) ; // "id" : java.lang.Integer
 	}
@@ -121,8 +123,10 @@ public class VentaPersistenceJdbc extends GenericJdbcDAO<Venta> implements Venta
 		if ( rs.wasNull() ) { venta.setImporte(null); }; // not primitive number => keep null value if any
 		venta.setFormaDePago(rs.getString("forma_de_pago")); // java.lang.String
 		venta.setVuelto(rs.getBigDecimal("vuelto")); // java.math.BigDecimal
-		venta.setMesa(rs.getString("mesa"));
 		if ( rs.wasNull() ) { venta.setVuelto(null); }; // not primitive number => keep null value if any
+		venta.setMesa(rs.getString("mesa"));
+		venta.setPagado(rs.getBoolean("pagado"));
+
 		return venta ;
 	}
 

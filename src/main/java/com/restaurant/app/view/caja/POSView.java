@@ -26,8 +26,8 @@ public class POSView extends AnchorPane implements Initializable, IPOSView {
 	private Map<String, Venta> ventas;
 
 	private String user;
-	private String perfil;	
-	
+	private String perfil;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		this.user = "Leonel";
@@ -51,6 +51,9 @@ public class POSView extends AnchorPane implements Initializable, IPOSView {
 	    	Scene scene = new Scene(rootPrincipal);
 			scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());
 			stage.setScene(scene);
+			Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+			stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+			stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}	

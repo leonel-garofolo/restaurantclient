@@ -20,6 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -129,6 +130,7 @@ public class PagoController extends AnchorPane implements Initializable, IView {
             venta.getFormaDePago() != null &&
                 venta.getImporte() != null){
             venta.setPagado(true);
+            venta.setVuelto(new BigDecimal(lblVuelto.getText()));
             ventaPersistence.save(venta);
             printTicket();
             posView.showFirstScene(venta);

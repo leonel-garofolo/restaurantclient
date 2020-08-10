@@ -296,6 +296,19 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 	}
 
 	@FXML
+	public void handleBtnTransferir(Event actionEvent) {
+		final String mesa = Message.addElement("Ingrese la mesa");
+		if(mesa == null){
+			handleBtnTransferir(actionEvent);
+		}
+
+		tPanePedidos.getSelectionModel().getSelectedItem().setText(mesa);
+		final Venta v =ventas.get(tPanePedidos.getSelectionModel().getSelectedItem().getId());
+		v.setMesa(mesa);
+		ventaPersistence.save(v);
+	}
+
+	@FXML
 	public void handleNewOrder(ActionEvent actionEvent) {
 		final String mesa = Message.addElement("Ingrese la mesa");
 		if(mesa == null){
@@ -368,6 +381,7 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		Venta venta = new Venta();
 		venta.setMesa(mesa);
 		venta.setFecha(new Date());
+		venta.setPagado(false);
 		venta = ventaPersistence.save(venta);
 		ventas.put(String.valueOf(venta.getId().longValue()), venta);
 		t.setId(String.valueOf(venta.getId()));
@@ -403,6 +417,7 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 			}
 			venta.setMesa(tPanePedidos.getSelectionModel().getSelectedItem().getText());
 			venta.setFecha(new Date());
+			venta.setPagado(false);
 			venta.setImporte(new BigDecimal(Double.valueOf(lblTotal.getText())));
 			venta = ventaPersistence.save(venta);
 			lineaDeVentaPersistence.cleanForVentaId(venta.getId());

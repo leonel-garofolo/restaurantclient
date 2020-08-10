@@ -48,7 +48,7 @@
                                                 <Font size="36.0" />
                                              </font>
                                           </Label>
-                                          <Label fx:id="lblTotal" prefHeight="64.0" prefWidth="184.0" style="-fx-background-color: #FFFFFF;" text="Label">
+                                          <Label fx:id="lblTotal" prefHeight="64.0" prefWidth="184.0" style="-fx-background-color: #FFFFFF;">
                                              <font>
                                                 <Font size="36.0" />
                                              </font>
@@ -57,9 +57,15 @@
                                     </HBox>
                                     <HBox alignment="CENTER" prefHeight="44.0" prefWidth="321.0" spacing="50.0">
                                        <children>
-                                          <Button fx:id="btnPedir" mnemonicParsing="false" onAction="#handleBtnPedir" prefHeight="32.0" prefWidth="98.0" text="Pedir" />
-                                          <Label contentDisplay="RIGHT" prefHeight="17.0" prefWidth="42.0" text="Mesa:" textAlignment="JUSTIFY" />
-                                          <TextField prefHeight="33.0" prefWidth="104.0" />
+                                          <Button fx:id="btnPedir" mnemonicParsing="false" onAction="#handleBtnPedir" prefHeight="32.0" prefWidth="98.0" text="Pedir">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font></Button>
+                                          <Button mnemonicParsing="false" onAction="#handleBtnTransferir" prefHeight="32.0" prefWidth="98.0" text="Transferir">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Button>
                                        </children>
                                        <VBox.margin>
                                           <Insets top="5.0" />

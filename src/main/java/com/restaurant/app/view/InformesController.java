@@ -13,6 +13,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class InformesController extends AnchorPane implements Initializable {
@@ -55,12 +56,19 @@ public class InformesController extends AnchorPane implements Initializable {
 
     @FXML
     private void handleBuscar(ActionEvent event) {
+        tblVentas.getItems().clear();
+        tblVentas.getItems().addAll(ventaPersistence.findAll());
 
     }
 
     @FXML
     private void handleLimpiar(ActionEvent event) {
-
+        tblVentas.getItems().clear();
+        cleanFormSearch();
     }
 
+    private void cleanFormSearch(){
+        timeFechaDesde.setValue(LocalDate.now());
+        timeFechaHasta.setValue(LocalDate.now());
+    }
 }

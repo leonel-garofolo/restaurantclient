@@ -77,7 +77,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="btnImprimirDetalle" mnemonicParsing="false" onAction="#handleImprimirDetalle" text="Imprimir Detallado">
+                        <Button fx:id="btnImprimirDetalle" mnemonicParsing="false" onAction="#handleImprimirDetalle" text="Imprimir Detallado" visible="false">
                        	 <graphic>
                               <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

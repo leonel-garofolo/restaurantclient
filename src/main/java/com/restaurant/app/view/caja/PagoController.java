@@ -1,15 +1,9 @@
 package com.restaurant.app.view.caja;
 
-import com.restaurant.app.model.LineaDeVenta;
 import com.restaurant.app.model.Venta;
 import com.restaurant.app.persistence.VentaPersistence;
 import com.restaurant.app.persistence.impl.jdbc.VentaPersistenceJdbc;
-import com.restaurant.app.printer.pos.CocinaDocument;
-import com.restaurant.app.printer.pos.PrinterService;
-import com.restaurant.app.printer.pos.model.Detail;
-import com.restaurant.app.printer.pos.model.Footer;
-import com.restaurant.app.printer.pos.model.Header;
-import com.restaurant.app.printer.pos.model.Line;
+import com.restaurant.app.services.PrintTicket;
 import com.restaurant.app.utils.Message;
 import com.restaurant.app.view.IView;
 import javafx.event.ActionEvent;
@@ -22,8 +16,6 @@ import javafx.stage.Stage;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -148,18 +140,15 @@ public class PagoController extends AnchorPane implements Initializable, IView {
             venta.setPagado(true);
             venta.setVuelto(new BigDecimal(lblVuelto.getText()));
             ventaPersistence.save(venta);
-            printTicket();
+            double importe = Double.valueOf(txtPago.getText().trim());
+            if(importe > 0){
+                PrintTicket printTicket = new PrintTicket(this.venta.getId());
+                printTicket.buildAndPrint();
+            } else
+                Message.error("El importe a pagar debe ser mayor a 0.");
             posView.showFirstScene(venta);
 
         }
-    }
-
-    private void printTicket(){
-        double importe = Double.valueOf(txtPago.getText().trim());
-        if(importe > 0){
-
-        } else
-            Message.error("El importe a pagar debe ser mayor a 0.");
     }
 
     private void operarPago(String valor){

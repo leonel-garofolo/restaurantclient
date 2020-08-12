@@ -1,8 +1,12 @@
 package com.restaurant.app.services;
 
 import com.restaurant.app.model.LineaDeVenta;
+import com.restaurant.app.model.Venta;
+import com.restaurant.app.persistence.LineaDeVentaPersistence;
 import com.restaurant.app.persistence.ProductosPersistence;
 import com.restaurant.app.persistence.VentaPersistence;
+import com.restaurant.app.persistence.impl.jdbc.LineaDeVentaPersistenceJdbc;
+import com.restaurant.app.persistence.impl.jdbc.VentaPersistenceJdbc;
 import com.restaurant.app.printer.pos.CocinaDocument;
 import com.restaurant.app.printer.pos.PrinterService;
 import com.restaurant.app.printer.pos.model.Detail;
@@ -16,7 +20,7 @@ import java.util.List;
 
 public class PrintTicket {
     private VentaPersistence ventaPersistence;
-    private LineaDeVenta lineaDeVenta;
+    private LineaDeVentaPersistence lineaDeVentaPersistence;
     private ProductosPersistence productosPersistence;
     private Long ventaId;
 
@@ -25,6 +29,11 @@ public class PrintTicket {
     }
 
     public void buildAndPrint(){
+        this.ventaPersistence = new VentaPersistenceJdbc();
+        this.lineaDeVentaPersistence = new LineaDeVentaPersistenceJdbc();
+        Venta venta = ventaPersistence.findById(ventaId);
+        venta.setLineaDeVentaList(lineaDeVentaPersistence.findAll());
+
         CocinaDocument cocinaDocument = new CocinaDocument();
         Header h = new Header();
         h.setTitle("Grun");
@@ -39,7 +48,7 @@ public class PrintTicket {
             line.add(l);
         }
         d.setLines(line);
-        d.setTotal(txtPago.getText().trim());
+        d.setTotal(venta.getImporte().toString());
         cocinaDocument.setDetail(d);
 
         Footer f = new Footer();

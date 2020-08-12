@@ -25,6 +25,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PagoController extends AnchorPane implements Initializable, IView {
     private POSView posView;
@@ -41,6 +43,20 @@ public class PagoController extends AnchorPane implements Initializable, IView {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.ventaPersistence = new VentaPersistenceJdbc();
+        txtPago.textProperty().addListener((observable, oldValue, newValue) -> {
+            double vuelto = 0f;
+            try{
+                vuelto = Double.valueOf(newValue).doubleValue() - Double.valueOf(lblImporte.getText());
+                lblVuelto.setText(String.valueOf(vuelto));
+            }catch (NumberFormatException e){
+            }
+        });
+        txtPago.setOnKeyTyped(event -> {
+            Matcher matcher = Pattern.compile("^-?\\d+(?:,\\d+)?(?:[Ee][-+]?\\d+)?$").matcher(event.getCharacter());
+            if (!matcher.find()) {
+                event.consume();
+            }
+        });
     }
 
     public void setParent(POSView posView){

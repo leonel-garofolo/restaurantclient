@@ -1,22 +1,6 @@
 package com.restaurant.app.view;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.restaurant.app.model.Categoria;
-import com.restaurant.app.model.Clientes;
-import com.restaurant.app.model.ParametrosGlobales;
-import com.restaurant.app.model.Productos;
-import com.restaurant.app.model.Usuarios;
+import com.restaurant.app.model.*;
 import com.restaurant.app.persistence.CategoriasPersistence;
 import com.restaurant.app.persistence.ClientesPersistence;
 import com.restaurant.app.persistence.ParametrosGlobalesPersistence;
@@ -26,26 +10,16 @@ import com.restaurant.app.persistence.impl.jdbc.ClientesPersistenceJdbc;
 import com.restaurant.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
 import com.restaurant.app.persistence.impl.jdbc.ProductosPersistenceJdbc;
 import com.restaurant.app.utils.Message;
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ObservableValueBase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.util.List;
 
 public class ConfiguracionesController extends AnchorPane {
 
@@ -88,6 +62,9 @@ public class ConfiguracionesController extends AnchorPane {
 
 	@FXML
 	private AnchorPane usuariosView;
+
+	@FXML
+	private Tab tabProductos;
 
 	@FXML
 	private Tab tabUsuarios;
@@ -230,7 +207,8 @@ public class ConfiguracionesController extends AnchorPane {
 
 
 	private void loadFormEntidades() {
-		cleanFormEntidades();		
+		cleanFormEntidades();
+		tblEntidades.getItems().clear();
 		tblEntidades.getItems().addAll(productosPersistence.findAll());		
 		
 		cbxCategorias.getItems().clear();
@@ -239,7 +217,6 @@ public class ConfiguracionesController extends AnchorPane {
 
 	private void cleanFormEntidades() {
 		this.modoEditEntidades = false;
-		tblEntidades.getItems().clear();
 		txtEntidadCodigo.setText("");
 		txtEntidadNombre.setText("");	
 		txtEntidadPrecio.setText("");
@@ -248,12 +225,12 @@ public class ConfiguracionesController extends AnchorPane {
 	
 	private void cleanFormCategoria() {
 		this.modoEditEntidades = false;
-		tblCategorias.getItems().clear();
 		txtCategoriaNombre.setText("");		
 	}
 	
 	private void loadFormCategorias() {
 		cleanFormCategoria();
+		tblCategorias.getItems().clear();
 		tblCategorias.getItems().addAll(categoriaPersistence.findAll());		
 	}
 
@@ -288,7 +265,12 @@ public class ConfiguracionesController extends AnchorPane {
 
 		initPersistence();
 		initTableView();		
-		initTextUpperCase();		
+		initTextUpperCase();
+
+		tabProductos.setOnSelectionChanged (e -> {
+			cbxCategorias.getItems().clear();
+			cbxCategorias.getItems().addAll(categoriaPersistence.findAll());
+		});
 	}
 
 	private void initTextUpperCase() {

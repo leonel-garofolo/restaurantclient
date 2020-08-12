@@ -362,11 +362,11 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 			b.setMinWidth(100);
 			GridPane.setMargin(b, new Insets(10, 0, 0, 10));
 			gp.add(b, countHorizontal, countVertical);
-			if(i > 0 && (i % 5) % 1 == 0){
+			countHorizontal++;
+			if(i > 4 && (i % 5) == 0){
 				countVertical++;
 				countHorizontal=0;
 			}
-			countHorizontal++;
 		}
 		sp.setContent(gp);
 

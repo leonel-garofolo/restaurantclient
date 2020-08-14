@@ -1,6 +1,7 @@
 package com.restaurant.app.printer.pos;
 
 import com.restaurant.app.printer.pos.model.Line;
+import com.restaurant.app.utils.UtilString;
 
 public class TicketDocument extends Document{
 
@@ -12,9 +13,9 @@ public class TicketDocument extends Document{
         }
         if(detail != null){
             for(Line l:detail.getLines()){
-                text += l.getProductName().trim()  + "\t" + l.getProductPrice().trim() + NEW_LINE;
+                text += UtilString.hardString(l.getProductName().trim(), 12)  + "\t" + l.getProductPrice().trim() + NEW_LINE;
             }
-            text += "Total: " + detail.getTotal() + NEW_LINE;
+            text += NEW_LINE + "Total: " + detail.getTotal() + NEW_LINE;
         }
         if(footer != null){
             if(footer.getNote() != null && !footer.getNote().isEmpty()){
@@ -24,4 +25,6 @@ public class TicketDocument extends Document{
         }
         return NEW_LINE + NEW_LINE + text + NEW_LINE + NEW_LINE;
     }
+
+
 }

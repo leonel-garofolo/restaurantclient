@@ -9,6 +9,8 @@ public class TicketDocument extends Document{
         String text = "";
         if(header != null){
             text += header.getTitle() + NEW_LINE;
+            text += header.getDireccion() + " - " + header.getLocalidad() + NEW_LINE;
+            text += NEW_LINE;
             text += "Mesa: " + header.getMesa() + NEW_LINE + NEW_LINE;
         }
         if(detail != null){
@@ -18,9 +20,8 @@ public class TicketDocument extends Document{
             text += NEW_LINE + "Total: " + detail.getTotal() + NEW_LINE;
         }
         if(footer != null){
-            if(footer.getNote() != null && !footer.getNote().isEmpty()){
-                text += NEW_LINE + "Nota:" + NEW_LINE;
-                text += footer.getNote() + NEW_LINE;
+            if(footer.getAgradecimiento() != null && !footer.getAgradecimiento().isEmpty()){
+                text += NEW_LINE + footer.getNote() + NEW_LINE;
             }
         }
         return NEW_LINE + NEW_LINE + text + NEW_LINE + NEW_LINE;

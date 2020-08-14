@@ -40,6 +40,7 @@ public class ParametrosGlobales implements Serializable
 	public static final String P_EMPRESA_BACKUP= "EMPRESA_BACKUP";
 	public static final String P_EMPRESA_AUTOMATICO= "EMPRESA_AUTOMATICO";
 	public static final String P_ACTIVAR_DEBUG= "ACTIVAR_DEBUG";
+	public static final String P_FOOTER= "FOOTER";
 	
 	public static final String A_CODIGO_ADUANA= "CODIGO_ADUANA";	                           
 	public static final String A_CODIGO_LOG= "CODIGO_LOG";
@@ -48,6 +49,8 @@ public class ParametrosGlobales implements Serializable
 	
 	public static final String I_INDICADOR1= "INDICADOR#1";
 	public static final String I_INDICADOR2= "INDICADOR#2";
+
+	public static final String P_CATEGORIA_COCINA= "CATEGORIA_COCINA=";
 	
     private static final long serialVersionUID = 1L;
 

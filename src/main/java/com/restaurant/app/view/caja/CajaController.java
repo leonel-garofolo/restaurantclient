@@ -1,14 +1,8 @@
 package com.restaurant.app.view.caja;
 
-import com.restaurant.app.model.LineaDeVenta;
-import com.restaurant.app.model.Productos;
-import com.restaurant.app.model.Venta;
-import com.restaurant.app.persistence.LineaDeVentaPersistence;
-import com.restaurant.app.persistence.ProductosPersistence;
-import com.restaurant.app.persistence.VentaPersistence;
-import com.restaurant.app.persistence.impl.jdbc.LineaDeVentaPersistenceJdbc;
-import com.restaurant.app.persistence.impl.jdbc.ProductosPersistenceJdbc;
-import com.restaurant.app.persistence.impl.jdbc.VentaPersistenceJdbc;
+import com.restaurant.app.model.*;
+import com.restaurant.app.persistence.*;
+import com.restaurant.app.persistence.impl.jdbc.*;
 import com.restaurant.app.printer.pos.CocinaDocument;
 import com.restaurant.app.printer.pos.PrinterService;
 import com.restaurant.app.printer.pos.model.Detail;
@@ -84,6 +78,8 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 	private ProductosPersistence productosPersistence;
 	private VentaPersistence ventaPersistence;
 	private LineaDeVentaPersistence lineaDeVentaPersistence;
+	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
+	private CategoriasPersistence categoriasPersistence;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resouces) {
@@ -96,6 +92,8 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		productosPersistence = new ProductosPersistenceJdbc();
 		ventaPersistence = new VentaPersistenceJdbc();
 		lineaDeVentaPersistence = new LineaDeVentaPersistenceJdbc();
+		parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();
+		categoriasPersistence = new CategoriasPersistenceJdbc();
 		colProductoNombre.setCellValueFactory(cellData -> new ObservableValueBase<String>() {
 
 			@Override
@@ -274,6 +272,13 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		if(tblProductos.getItems().isEmpty()){
 			Message.error("Es necesario tener cargado al menos un producto.");
 		} else {
+			ParametrosGlobales pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_CATEGORIA_COCINA);
+			parametrosGlobalesPersistence.load(pg);
+			Long categoriaId;
+			if(pg != null && pg.getValue() != null)
+				categoriaId = Long.valueOf(pg.getValue());
+
 			CocinaDocument cocinaDocument = new CocinaDocument();
 			Header h = new Header();
 			h.setTitle("Cocina");
@@ -284,9 +289,11 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 			List<Line> lines = new ArrayList<>();
 			Line line;
 			for(LineaDeVenta lineaDeVenta: tblProductos.getItems()){
-				line= new Line();
-				line.setProductName(lineaDeVenta.getProducto().getNombre());
-				lines.add(line);
+				if(lineaDeVenta.getProducto().getCategoriaId().longValue() == categoriaId.longValue()){
+					line= new Line();
+					line.setProductName(lineaDeVenta.getProducto().getNombre());
+					lines.add(line);
+				}
 			}
 			d.setLines(lines);
 

@@ -1,14 +1,8 @@
 package com.restaurant.app.services;
 
-import com.restaurant.app.model.LineaDeVenta;
-import com.restaurant.app.model.Productos;
-import com.restaurant.app.model.Venta;
-import com.restaurant.app.persistence.LineaDeVentaPersistence;
-import com.restaurant.app.persistence.ProductosPersistence;
-import com.restaurant.app.persistence.VentaPersistence;
-import com.restaurant.app.persistence.impl.jdbc.LineaDeVentaPersistenceJdbc;
-import com.restaurant.app.persistence.impl.jdbc.ProductosPersistenceJdbc;
-import com.restaurant.app.persistence.impl.jdbc.VentaPersistenceJdbc;
+import com.restaurant.app.model.*;
+import com.restaurant.app.persistence.*;
+import com.restaurant.app.persistence.impl.jdbc.*;
 import com.restaurant.app.printer.pos.PrinterService;
 import com.restaurant.app.printer.pos.TicketDocument;
 import com.restaurant.app.printer.pos.model.Detail;
@@ -27,22 +21,41 @@ public class PrintTicket {
     private VentaPersistence ventaPersistence;
     private LineaDeVentaPersistence lineaDeVentaPersistence;
     private ProductosPersistence productosPersistence;
+    private CategoriasPersistence categoriasPersistence;
+    private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
     private Long ventaId;
 
     public PrintTicket(@NotNull  Long ventaId) {
         this.ventaId = ventaId;
-    }
-
-    public void buildAndPrint(){
         this.ventaPersistence = new VentaPersistenceJdbc();
         this.lineaDeVentaPersistence = new LineaDeVentaPersistenceJdbc();
         this.productosPersistence = new ProductosPersistenceJdbc();
+        this.categoriasPersistence = new CategoriasPersistenceJdbc();
+        this.parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();
+    }
+
+    public void buildAndPrint(){
         Venta venta = ventaPersistence.findById(ventaId);
         venta.setLineaDeVentaList(lineaDeVentaPersistence.findLineaDeVentaForVentaId(ventaId));
 
         TicketDocument ticketDocument = new TicketDocument();
         Header h = new Header();
-        h.setTitle("Cerveceria Grun");
+
+        ParametrosGlobales pg = new ParametrosGlobales();
+        pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE);
+        parametrosGlobalesPersistence.load(pg);
+        h.setTitle(pg.getValue());
+
+        pg = new ParametrosGlobales();
+        pg.setId(ParametrosGlobales.P_EMPRESA_DIR);
+        parametrosGlobalesPersistence.load(pg);
+        h.setDireccion(pg.getValue().trim());
+
+        pg = new ParametrosGlobales();
+        pg.setId(ParametrosGlobales.P_EMPRESA_LOC);
+        parametrosGlobalesPersistence.load(pg);
+        h.setLocalidad(pg.getValue().trim());
+
         h.setMesa(venta.getMesa());
         ticketDocument.setHeader(h);
 
@@ -62,6 +75,10 @@ public class PrintTicket {
 
         Footer f = new Footer();
         f.setNote("");
+        pg = new ParametrosGlobales();
+        pg.setId(ParametrosGlobales.P_FOOTER);
+        parametrosGlobalesPersistence.load(pg);
+        f.setAgradecimiento(pg.getValue().trim());
         ticketDocument.setFooter(f);
 
         PrinterService printerService = new PrinterService();

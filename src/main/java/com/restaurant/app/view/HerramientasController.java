@@ -1,5 +1,6 @@
 package com.restaurant.app.view;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,6 +16,12 @@ import javax.imageio.ImageIO;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialException;
 
+import com.restaurant.app.model.Categoria;
+import com.restaurant.app.persistence.CategoriasPersistence;
+import com.restaurant.app.persistence.impl.jdbc.CategoriasPersistenceJdbc;
+import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import org.apache.log4j.Logger;
 import org.javafx.controls.customs.StringField;
 
@@ -30,11 +37,6 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -98,6 +100,9 @@ public class HerramientasController extends AnchorPane implements IView {
 	private StringField txtProvBalanza;
 
 	@FXML
+	private StringField txtFooter;
+
+	@FXML
 	private PasswordField txtClaveIngManual;
 
 	@FXML
@@ -107,10 +112,13 @@ public class HerramientasController extends AnchorPane implements IView {
 	private CheckBox chkticketEtiquetadora;
 
 	@FXML
-	private StringField txtNumBalanzas;
+	private ComboBox<Categoria> cbxCategoriaCocina;
+
+
 
 	private Stage stage;
 	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
+	private CategoriasPersistence categoriasPersistence;
 
 	@FXML
 	private void handleSelectImagen(ActionEvent event) {
@@ -244,16 +252,9 @@ public class HerramientasController extends AnchorPane implements IView {
 			parametrosGlobalesPersistence.save(pg);
 		}
 
-		if (txtNumBalanzas != null && txtNumBalanzas.getText() != null && !txtNumBalanzas.getText().isEmpty()) {
-			try {
-				Integer.valueOf(txtNumBalanzas.getText().trim());
-			} catch (NumberFormatException e) {
-				Message.error("El número de balanzas debe ser un numero entero.");
-				return;
-			}
-
-			pg.setId(ParametrosGlobales.P_NUM_BALANZAS);
-			pg.setValue(txtNumBalanzas.getText().trim());
+		if (txtFooter != null && txtFooter.getText() != null && !txtFooter.getText().isEmpty()) {
+			pg.setId(ParametrosGlobales.P_FOOTER);
+			pg.setValue(txtFooter.getText());
 			parametrosGlobalesPersistence.save(pg);
 		}
 
@@ -294,6 +295,12 @@ public class HerramientasController extends AnchorPane implements IView {
 				&& !txtClaveIngManual.getText().isEmpty()) {
 			pg.setId(ParametrosGlobales.P_EMPRESA_ING_MANUAL);
 			pg.setValue(txtClaveIngManual.getText());
+			parametrosGlobalesPersistence.save(pg);
+		}
+
+		if (cbxCategoriaCocina != null && cbxCategoriaCocina.getSelectionModel().getSelectedItem() != null) {
+			pg.setId(ParametrosGlobales.P_CATEGORIA_COCINA);
+			pg.setValue(String.valueOf(cbxCategoriaCocina.getSelectionModel().getSelectedItem().getId()));
 			parametrosGlobalesPersistence.save(pg);
 		}
 
@@ -358,6 +365,7 @@ public class HerramientasController extends AnchorPane implements IView {
 		imgEmpresa.setStyle(".image-view-wrapper:border {" + "    -fx-border-color: black;"
 				+ "    -fx-border-style: solid;" + "    -fx-border-width: 5" + "}");
 		parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();
+		categoriasPersistence = new CategoriasPersistenceJdbc();
 		txtNombreEmpresa.textProperty().addListener((ov, oldValue, newValue) -> {
 			if (newValue != null) {
 				txtNombreEmpresa.setValue(newValue.toUpperCase());
@@ -413,12 +421,6 @@ public class HerramientasController extends AnchorPane implements IView {
 		txtTransaccion.textProperty().addListener((ov, oldValue, newValue) -> {
 			if (newValue != null) {
 				txtTransaccion.setValue(newValue.toUpperCase());
-			}
-		});
-
-		txtNumBalanzas.textProperty().addListener((ov, oldValue, newValue) -> {
-			if (newValue != null) {
-				txtNumBalanzas.setValue(newValue.toUpperCase());
 			}
 		});
 
@@ -521,13 +523,6 @@ public class HerramientasController extends AnchorPane implements IView {
 		}
 
 		pg = new ParametrosGlobales();
-		pg.setId(ParametrosGlobales.P_NUM_BALANZAS);
-		parametrosGlobalesPersistence.load(pg);
-		if (pg != null) {
-			txtNumBalanzas.setText(pg.getValue());
-		}
-
-		pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_EMPRESA_IMG);
 		parametrosGlobalesPersistence.load(pg);
 		if (pg != null && pg.getValueByte() != null) {
@@ -581,6 +576,27 @@ public class HerramientasController extends AnchorPane implements IView {
 		pg.setId(ParametrosGlobales.P_EMPRESA_ING_MANUAL);
 		parametrosGlobalesPersistence.load(pg);
 		if (pg != null) {
+			txtClaveIngManual.setText(pg.getValue());
+		}
+
+		pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_FOOTER);
+		parametrosGlobalesPersistence.load(pg);
+		if (pg != null) {
+			txtFooter.setText(pg.getValue());
+		}
+
+		//Load all categorias
+		cbxCategoriaCocina.getItems().clear();
+		cbxCategoriaCocina.getItems().addAll(categoriasPersistence.findAll());
+
+		// SET VALUE CONFIRADO
+		pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_CATEGORIA_COCINA);
+		parametrosGlobalesPersistence.load(pg);
+		if (pg != null && pg.getValue() != null) {
+			Categoria c = categoriasPersistence.findById(Long.valueOf(pg.getValue()));
+			cbxCategoriaCocina.getSelectionModel().select(c);
 			txtClaveIngManual.setText(pg.getValue());
 		}
 	}

@@ -14,6 +14,7 @@ import com.restaurant.app.printer.pos.PrinterService;
 import com.restaurant.app.printer.pos.model.Detail;
 import com.restaurant.app.printer.pos.model.Footer;
 import com.restaurant.app.printer.pos.model.Header;
+import com.restaurant.app.printer.pos.model.Line;
 import com.restaurant.app.utils.Message;
 import com.restaurant.app.view.IView;
 import javafx.beans.value.ObservableValueBase;
@@ -77,6 +78,8 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 	private Button btnDel;
 	@FXML
 	private Label lblTotal;
+
+	private TextArea txtNote;
 
 	private ProductosPersistence productosPersistence;
 	private VentaPersistence ventaPersistence;
@@ -278,16 +281,22 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 			cocinaDocument.setHeader(h);
 			Detail d =new Detail();
 			cocinaDocument.setDetail(d);
+			List<Line> lines = new ArrayList<>();
+			Line line;
+			for(LineaDeVenta lineaDeVenta: tblProductos.getItems()){
+				line= new Line();
+				line.setProductName(lineaDeVenta.getProducto().getNombre());
+				lines.add(line);
+			}
+			d.setLines(lines);
 
 			Footer f = new Footer();
-			f.setNote("");
+			f.setNote(txtNote.getText().trim());
 			cocinaDocument.setFooter(f);
-
+			logger.info(cocinaDocument.build());
 			PrinterService printerService = new PrinterService();
-			System.out.println(printerService.getPrinters());
-
 			//print some stuff. Change the printer name to your thermal printer name.
-			printerService.printString("XP-58", "\n\n " + cocinaDocument.build() + " \n\n\n\n\n");
+			printerService.printString("XP-58", cocinaDocument.build());
 			// cut that paper!
 			byte[] cutP = new byte[] { 0x1d, 'V', 1 };
 
@@ -373,9 +382,9 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		//Nota en bottom
 		VBox vNote = new VBox();
 		vNote.getChildren().add(new Label("Nota:"));
-		TextArea note = new TextArea();
-		note.setMinHeight(10);
-		vNote.getChildren().add(note);
+		txtNote = new TextArea();
+		txtNote.setMinHeight(10);
+		vNote.getChildren().add(txtNote);
 		borderPane.setBottom(vNote);
 
 		Venta venta = new Venta();

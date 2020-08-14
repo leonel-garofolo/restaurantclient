@@ -3,21 +3,25 @@ package com.restaurant.app.printer.pos;
 import com.restaurant.app.printer.pos.model.Line;
 
 public class CocinaDocument extends Document{
+    private static final String NEW_LINE = "\n";
 
     public String build(){
         String text = "";
         if(header != null){
-            text += header.getTitle();
-            text += header.getMesa();
+            text += header.getTitle() + NEW_LINE;
+            text += "Mesa: " + header.getMesa() + NEW_LINE + NEW_LINE;
         }
         if(detail != null){
             for(Line l:detail.getLines()){
-                text += l.getProductName();
+                text += l.getProductName() + NEW_LINE;
             }
         }
         if(footer != null){
-            text += footer.getNote();
+            if(footer.getNote() != null && !footer.getNote().isEmpty()){
+                text += NEW_LINE + "Nota:" + NEW_LINE;
+                text += footer.getNote() + NEW_LINE;
+            }
         }
-        return text;
+        return NEW_LINE + NEW_LINE + text + NEW_LINE + NEW_LINE;
     }
 }

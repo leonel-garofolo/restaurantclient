@@ -73,7 +73,6 @@ public class PrinterService implements Printable {
             job.print(doc, null);
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

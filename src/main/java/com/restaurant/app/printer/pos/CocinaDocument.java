@@ -3,7 +3,6 @@ package com.restaurant.app.printer.pos;
 import com.restaurant.app.printer.pos.model.Line;
 
 public class CocinaDocument extends Document{
-    private static final String NEW_LINE = "\n";
 
     public String build(){
         String text = "";
@@ -13,7 +12,7 @@ public class CocinaDocument extends Document{
         }
         if(detail != null){
             for(Line l:detail.getLines()){
-                text += l.getProductName() + NEW_LINE;
+                text += l.getProductName().trim() + NEW_LINE;
             }
         }
         if(footer != null){

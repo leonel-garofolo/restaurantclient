@@ -7,18 +7,21 @@ public class TicketDocument extends Document{
     public String build(){
         String text = "";
         if(header != null){
-            text += header.getTitle();
-            text += header.getMesa();
+            text += header.getTitle() + NEW_LINE;
+            text += "Mesa: " + header.getMesa() + NEW_LINE + NEW_LINE;
         }
         if(detail != null){
-            // TODO acotar nombre y precio para que siempre esten alineados
             for(Line l:detail.getLines()){
-                text += l.getProductName() + "  " + l.getProductPrice();
+                text += l.getProductName().trim()  + "\t" + l.getProductPrice().trim() + NEW_LINE;
             }
+            text += "Total: " + detail.getTotal() + NEW_LINE;
         }
         if(footer != null){
-            text += footer.getNote();
+            if(footer.getNote() != null && !footer.getNote().isEmpty()){
+                text += NEW_LINE + "Nota:" + NEW_LINE;
+                text += footer.getNote() + NEW_LINE;
+            }
         }
-        return text;
+        return NEW_LINE + NEW_LINE + text + NEW_LINE + NEW_LINE;
     }
 }

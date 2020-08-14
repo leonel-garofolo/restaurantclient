@@ -11,6 +11,7 @@ import com.restaurant.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 
 import javax.inject.Named;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -284,5 +285,28 @@ public class LineaDeVentaPersistenceJdbc extends GenericJdbcDAO<LineaDeVenta> im
 		}finally {
 			closeConnection(conn, st);
 		}
+	}
+
+	@Override
+	public List<LineaDeVenta> findLineaDeVentaForVentaId(Long ventaId) {
+		List<LineaDeVenta> lineaDeVentas = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement st = null;
+		try{
+			conn = getConnection();
+			st = conn.prepareStatement("select * from linea_de_venta where venta_id = ?");
+			st.setLong(1, ventaId);
+			ResultSet rs = st.executeQuery();
+			while (rs.next()){
+				LineaDeVenta l = new LineaDeVenta();
+				populateBean(rs, l);
+				lineaDeVentas.add(l);
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+		}finally {
+			closeConnection(conn, st);
+		}
+		return lineaDeVentas;
 	}
 }

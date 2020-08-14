@@ -5,7 +5,7 @@ import com.restaurant.app.printer.pos.model.Footer;
 import com.restaurant.app.printer.pos.model.Header;
 
 public abstract class Document {
-
+    protected static final String NEW_LINE = "\n";
     protected Header header;
     protected Detail detail;
     protected Footer footer;

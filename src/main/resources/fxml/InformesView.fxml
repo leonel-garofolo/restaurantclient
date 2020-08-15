@@ -5,9 +5,9 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="581.0" prefWidth="958.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.app.view.InformesController">
+<AnchorPane prefHeight="763.0" prefWidth="1118.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.app.view.InformesController">
    <children>
-      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="958.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" text="TRANSACCIONES - CONSULTA DE OPERACIONES" />
             <HBox alignment="CENTER_LEFT" prefHeight="44.0" prefWidth="600.0" spacing="5.0">
@@ -36,18 +36,18 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </HBox>
-             <TableView fx:id="tblVentas" prefHeight="432.0" prefWidth="758.0">
+             <TableView fx:id="tblVentas" prefHeight="567.0" prefWidth="1118.0">
                  <columns>
                      <TableColumn fx:id="colFecha" prefWidth="186.0" text="Fecha" />
-                     <TableColumn fx:id="colChasis" prefWidth="141.0" text="Forma de Pago" />
-                     <TableColumn fx:id="colEntrada" minWidth="0.0" prefWidth="110.0" text="Importe" />
-                     <TableColumn fx:id="colSalida" minWidth="0.0" prefWidth="86.0" text="Vuelto" />
-                  <TableColumn prefWidth="157.0" text="Subtotal" />
+                     <TableColumn fx:id="colFormaPago" prefWidth="141.0" text="Forma de Pago" />
+                     <TableColumn fx:id="colImporte" minWidth="0.0" prefWidth="110.0" text="Importe" />
+                     <TableColumn fx:id="colVuelto" minWidth="0.0" prefWidth="86.0" text="Vuelto" />
+                  <TableColumn fx:id="colSubTotal" prefWidth="157.0" text="Subtotal" />
                  </columns>
              </TableView>
             <VBox>
                <children>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="958.0">
                      <children>
                         <Label prefHeight="43.0" prefWidth="56.0" text="TOTAL:" />
                         <Label fx:id="lblTotal" prefHeight="37.0" prefWidth="135.0">

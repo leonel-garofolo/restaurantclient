@@ -10,9 +10,10 @@ import com.restaurant.app.persistence.VentaPersistence;
 import com.restaurant.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 
 import javax.inject.Named;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -118,7 +119,7 @@ public class VentaPersistenceJdbc extends GenericJdbcDAO<Venta> implements Venta
 		//--- Set data from ResultSet to Bean attributes
 		venta.setId(rs.getLong("id")); // java.lang.Integer
 		if ( rs.wasNull() ) { venta.setId(null); }; // not primitive number => keep null value if any
-		venta.setFecha(rs.getDate("fecha")); // java.util.Date
+		venta.setFecha(rs.getTimestamp("fecha")); // java.util.Date
 		venta.setImporte(rs.getBigDecimal("importe")); // java.math.BigDecimal
 		if ( rs.wasNull() ) { venta.setImporte(null); }; // not primitive number => keep null value if any
 		venta.setFormaDePago(rs.getString("forma_de_pago")); // java.lang.String
@@ -272,4 +273,26 @@ public class VentaPersistenceJdbc extends GenericJdbcDAO<Venta> implements Venta
 		return SQL_COUNT_ALL ;
 	}
 
+	@Override
+	public List<Venta> findVentasForDate(final Date fechaDesde, final Date fechaHasta) {
+		List<Venta> ventas = new ArrayList<>();
+		Connection conn= null;
+		Statement st= null;
+		try{
+			conn = getConnection();
+			SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:00");
+			st = conn.createStatement();
+			ResultSet rs = st.executeQuery("select * from venta where pagado = 1 and fecha >= '" + dFormat.format(fechaDesde) + "' and fecha < '" + dFormat.format(fechaHasta) + "'");
+			while(rs.next()) {
+				Venta v = new Venta();
+				populateBean(rs, v);
+				ventas.add(v);
+			}
+			rs.close();
+		}catch (SQLException e){
+			e.printStackTrace();
+			closeConnection(conn, st);
+		}
+		return ventas;
+	}
 }

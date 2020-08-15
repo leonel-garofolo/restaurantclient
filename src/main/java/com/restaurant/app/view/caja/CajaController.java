@@ -275,7 +275,7 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 			ParametrosGlobales pg = new ParametrosGlobales();
 			pg.setId(ParametrosGlobales.P_CATEGORIA_COCINA);
 			parametrosGlobalesPersistence.load(pg);
-			Long categoriaId;
+			Long categoriaId = null;
 			if(pg != null && pg.getValue() != null)
 				categoriaId = Long.valueOf(pg.getValue());
 

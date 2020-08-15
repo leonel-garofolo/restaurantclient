@@ -15,13 +15,13 @@ public class TicketDocument extends Document{
         }
         if(detail != null){
             for(Line l:detail.getLines()){
-                text += UtilString.hardString(l.getProductName().trim(), 12)  + "\t" + l.getProductPrice().trim() + NEW_LINE;
+                text += UtilString.hardString(l.getProductName().trim(), 20)  + "     " + l.getProductPrice().trim() + NEW_LINE;
             }
-            text += NEW_LINE + "Total: " + detail.getTotal() + NEW_LINE;
+            text += NEW_LINE + UtilString.hardString("Total:", 20) + "     " + detail.getTotal() + NEW_LINE;
         }
         if(footer != null){
             if(footer.getAgradecimiento() != null && !footer.getAgradecimiento().isEmpty()){
-                text += NEW_LINE + footer.getNote() + NEW_LINE;
+                text += NEW_LINE + footer.getAgradecimiento() + NEW_LINE;
             }
         }
         return NEW_LINE + NEW_LINE + text + NEW_LINE + NEW_LINE;

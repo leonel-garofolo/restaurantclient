@@ -58,7 +58,7 @@
                               <Label prefHeight="31.0" prefWidth="209.0" text="Categoria de Cocina" GridPane.rowIndex="11" />
                               <CheckBox fx:id="chkticketEtiquetadora" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                               <Label text="Final de pagina" GridPane.rowIndex="6" />
-                              <TextField fx:id="txtFooter" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <StringField fx:id="txtFooter" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                               <Label text="Etiquetadora" GridPane.rowIndex="9">
                                  <font>
                                     <Font size="14.0" />

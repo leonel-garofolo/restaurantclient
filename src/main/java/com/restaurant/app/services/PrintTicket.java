@@ -9,6 +9,7 @@ import com.restaurant.app.printer.pos.model.Detail;
 import com.restaurant.app.printer.pos.model.Footer;
 import com.restaurant.app.printer.pos.model.Header;
 import com.restaurant.app.printer.pos.model.Line;
+import com.restaurant.app.utils.UtilString;
 import com.sun.istack.internal.NotNull;
 import org.apache.log4j.Logger;
 
@@ -42,19 +43,22 @@ public class PrintTicket {
         Header h = new Header();
 
         ParametrosGlobales pg = new ParametrosGlobales();
-        pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE);
+        pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE_BAL);
         parametrosGlobalesPersistence.load(pg);
-        h.setTitle(pg.getValue());
+        if(pg != null && pg.getValue() != null)
+            h.setTitle(pg.getValue());
 
         pg = new ParametrosGlobales();
-        pg.setId(ParametrosGlobales.P_EMPRESA_DIR);
+        pg.setId(ParametrosGlobales.P_EMPRESA_DIR_BAL);
         parametrosGlobalesPersistence.load(pg);
-        h.setDireccion(pg.getValue().trim());
+        if(pg != null && pg.getValue() != null)
+            h.setDireccion(pg.getValue().trim());
 
         pg = new ParametrosGlobales();
-        pg.setId(ParametrosGlobales.P_EMPRESA_LOC);
+        pg.setId(ParametrosGlobales.P_EMPRESA_LOC_BAL);
         parametrosGlobalesPersistence.load(pg);
-        h.setLocalidad(pg.getValue().trim());
+        if(pg != null && pg.getValue() != null)
+            h.setLocalidad(pg.getValue().trim());
 
         h.setMesa(venta.getMesa());
         ticketDocument.setHeader(h);
@@ -78,7 +82,8 @@ public class PrintTicket {
         pg = new ParametrosGlobales();
         pg.setId(ParametrosGlobales.P_FOOTER);
         parametrosGlobalesPersistence.load(pg);
-        f.setAgradecimiento(pg.getValue().trim());
+        if(pg != null && pg.getValue() != null)
+            f.setAgradecimiento(pg.getValue().trim());
         ticketDocument.setFooter(f);
 
         PrinterService printerService = new PrinterService();

@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.restaurant</groupId>
   <artifactId>restaurantclient</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   
   <properties>
 		<compileSource>1.8</compileSource>
@@ -115,7 +115,7 @@
 						<configuration>
 							<headerType>gui</headerType>
 							<jar>${project.build.directory}/${artifactId}-${version}-shaded.jar</jar>
-							<outfile>${project.build.directory}/SistemaDePesaje.exe</outfile>
+							<outfile>${project.build.directory}/RestaurantGrun.exe</outfile>
 							<downloadUrl>http://java.com/download</downloadUrl>
 							<classPath>
 								<mainClass>com.balanzasgj.app.App</mainClass>

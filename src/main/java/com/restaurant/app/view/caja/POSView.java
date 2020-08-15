@@ -4,11 +4,9 @@ import com.restaurant.app.model.Venta;
 import com.restaurant.app.view.IPOSView;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -51,9 +49,12 @@ public class POSView extends AnchorPane implements Initializable, IPOSView {
 	    	Scene scene = new Scene(rootPrincipal);
 			scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());
 			stage.setScene(scene);
+				/*
 			Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
 			stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
 			stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+
+				 */
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}	
@@ -78,9 +79,12 @@ public class POSView extends AnchorPane implements Initializable, IPOSView {
 			Scene scene = new Scene(rootPrincipal);
 			scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());
 			stage.setScene(scene);
+			/*
 			Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
 			stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
 			stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+
+			 */
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

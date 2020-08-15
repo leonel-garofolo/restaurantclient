@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="516.0" prefWidth="617.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.app.view.caja.PagoController">
+<AnchorPane prefHeight="865.0" prefWidth="1306.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.app.view.caja.PagoController">
    <children>
       <BorderPane layoutX="219.0" prefHeight="516.0" prefWidth="617.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -16,7 +16,7 @@
             </Label>
          </top>
          <left>
-            <VBox alignment="TOP_CENTER" prefHeight="243.0" prefWidth="111.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" prefHeight="520.0" prefWidth="111.0" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
                   <Button fx:id="btnEfectivo" mnemonicParsing="false" onAction="#handleBtnEfectivo" prefHeight="45.0" prefWidth="110.0" text="Efectivo" />
                   <Button fx:id="btnTarjeta" mnemonicParsing="false" onAction="#handleBtnTarjeta" prefHeight="45.0" prefWidth="111.0" text="Tarjeta" />
@@ -27,7 +27,7 @@
             </VBox>
          </left>
           <center>
-              <VBox prefHeight="203.0" prefWidth="396.0" spacing="10.0">
+              <VBox prefHeight="529.0" prefWidth="1085.0" spacing="10.0">
                <HBox prefHeight="42.0" prefWidth="396.0">
                   <children>
                      <Label prefHeight="42.0" prefWidth="92.0" text="Importe:">
@@ -61,6 +61,9 @@
                      <Label fx:id="lblVuelto" prefHeight="42.0" prefWidth="173.0" text="Valor vuelto" />
                   </children>
                </HBox>
+               <padding>
+                  <Insets left="100.0" />
+               </padding>
 
 
               </VBox>
@@ -76,7 +79,7 @@
             </VBox>
          </right>
          <bottom>
-               <GridPane prefHeight="215.0" prefWidth="315.0" BorderPane.alignment="CENTER">
+               <GridPane alignment="CENTER" prefHeight="215.0" prefWidth="870.0" BorderPane.alignment="CENTER">
                    <columnConstraints>
                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -106,7 +109,7 @@
 
                    </children>
                    <padding>
-                       <Insets bottom="10.0" top="10.0" />
+                       <Insets bottom="10.0" left="100.0" right="100.0" top="10.0" />
                    </padding>
                <BorderPane.margin>
                   <Insets left="150.0" right="150.0" />

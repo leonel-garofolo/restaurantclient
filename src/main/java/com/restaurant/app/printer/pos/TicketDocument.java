@@ -3,6 +3,9 @@ package com.restaurant.app.printer.pos;
 import com.restaurant.app.printer.pos.model.Line;
 import com.restaurant.app.utils.UtilString;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class TicketDocument extends Document{
 
     public String build(){
@@ -10,7 +13,11 @@ public class TicketDocument extends Document{
         if(header != null){
             text += header.getTitle() + NEW_LINE;
             text += header.getDireccion() + " - " + header.getLocalidad() + NEW_LINE;
+            text += header.getTelefono() + NEW_LINE;
             text += NEW_LINE;
+
+            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            text += df.format(new Date()) + NEW_LINE;
             text += "Mesa: " + header.getMesa() + NEW_LINE + NEW_LINE;
         }
         if(detail != null){

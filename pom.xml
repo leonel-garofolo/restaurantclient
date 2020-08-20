@@ -53,7 +53,7 @@
 						<executable>C:\Program Files\Java\jdk1.8.0_131\bin\javac.exe</executable> -->
 					<archive>
 						<manifest>
-							<mainClass>com.balanzasgj.app.App</mainClass>
+							<mainClass>com.restaurant.app.App</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -96,7 +96,7 @@
 							implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
 						<transformer
 							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-							<mainClass>com.balanzasgj.app.App</mainClass>
+							<mainClass>com.restaurant.app.App</mainClass>
 						</transformer>
 					</transformers>
 				</configuration>
@@ -118,7 +118,7 @@
 							<outfile>${project.build.directory}/RestaurantGrun.exe</outfile>
 							<downloadUrl>http://java.com/download</downloadUrl>
 							<classPath>
-								<mainClass>com.balanzasgj.app.App</mainClass>
+								<mainClass>com.restaurant.app.App</mainClass>
 								<preCp>anything</preCp>
 							</classPath>
 

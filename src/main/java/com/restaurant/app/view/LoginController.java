@@ -1,17 +1,10 @@
 package com.restaurant.app.view;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import com.restaurant.app.App;
 import com.restaurant.app.model.Usuarios;
 import com.restaurant.app.persistence.UsuariosPersistence;
 import com.restaurant.app.persistence.impl.jdbc.UsuariosPersistenceJdbc;
 import com.restaurant.app.utils.Message;
-import com.restaurant.app.utils.UtilView;
 import com.restaurant.app.utils.Utils;
-
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,12 +17,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class LoginController implements Initializable, IView, EventHandler<WindowEvent>{
 	@FXML
@@ -64,7 +60,7 @@ public class LoginController implements Initializable, IView, EventHandler<Windo
 				Usuarios.setPerfilLogeado(Usuarios.P_SUPERVISOR);
 				break;
 			case "3":
-				Usuarios.setPerfilLogeado(Usuarios.P_OPERADOR);
+				Usuarios.setPerfilLogeado(Usuarios.P_CAJA);
 				break;
 
 			default:

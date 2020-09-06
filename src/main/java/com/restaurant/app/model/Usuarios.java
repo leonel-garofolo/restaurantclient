@@ -3,7 +3,7 @@ package com.restaurant.app.model;
 public class Usuarios {
 	public final static String P_ADMINISTRADOR = "ADMINISTRADOR";
 	public final static String P_SUPERVISOR = "SUPERVISOR";
-	public final static String P_OPERADOR = "OPERADOR";
+	public final static String P_CAJA = "CAJA";
 	
 	
 	private static String usuarioLogeado;

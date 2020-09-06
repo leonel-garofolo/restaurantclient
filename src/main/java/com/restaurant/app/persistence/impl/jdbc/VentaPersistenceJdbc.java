@@ -296,14 +296,37 @@ public class VentaPersistenceJdbc extends GenericJdbcDAO<Venta> implements Venta
 		return ventas;
 	}
 
-    @Override
+	@Override
+	public List<Venta> getVentasPending() {
+		List<Venta> ventas = new ArrayList<>();
+		Connection conn= null;
+		Statement st= null;
+		try{
+			conn = getConnection();
+			SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:00");
+			st = conn.createStatement();
+			ResultSet rs = st.executeQuery("select * from venta where cancel is null");
+			while(rs.next()) {
+				Venta v = new Venta();
+				populateBean(rs, v);
+				ventas.add(v);
+			}
+			rs.close();
+		}catch (SQLException e){
+			e.printStackTrace();
+			closeConnection(conn, st);
+		}
+		return ventas;
+	}
+
+	@Override
     public void cancel(long ventaId) {
 		Connection conn= null;
 		Statement st= null;
 		try{
 			conn = getConnection();
 			st = conn.createStatement();
-			st.execute("update venta set cancel = current_date() where id = " + ventaId);
+			st.execute("update venta set cancel = current_timestamp() where id = " + ventaId);
 		}catch (SQLException e){
 			e.printStackTrace();
 			closeConnection(conn, st);

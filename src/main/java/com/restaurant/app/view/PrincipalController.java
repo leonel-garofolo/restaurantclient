@@ -1,25 +1,10 @@
 package com.restaurant.app.view;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.ResourceBundle;
-
-import javax.imageio.ImageIO;
-
-import org.apache.log4j.Logger;
-
-import com.restaurant.app.view.HerramientasController;
 import com.restaurant.app.model.ParametrosGlobales;
 import com.restaurant.app.model.Usuarios;
 import com.restaurant.app.persistence.ParametrosGlobalesPersistence;
 import com.restaurant.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
-import com.restaurant.app.utils.Message;
 import com.restaurant.app.utils.UtilView;
-
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -34,10 +19,19 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
-import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import org.apache.log4j.Logger;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 public class PrincipalController implements Initializable, IView{	
 	final static Logger logger = Logger.getLogger(PrincipalController.class);	
@@ -185,8 +179,9 @@ public class PrincipalController implements Initializable, IView{
 		case Usuarios.P_SUPERVISOR:
 			btnHerramientas.setDisable(true);
 			break;
-		case Usuarios.P_OPERADOR:
+		case Usuarios.P_CAJA:
 			btnHerramientas.setDisable(true);
+			btnConfiguraciones.setDisable(true);
 			break;
 		default:
 			break;

@@ -34,6 +34,9 @@ public class ConfiguracionesController extends AnchorPane {
 
 	@FXML
 	private TableColumn<Productos, String> colNombre;
+
+	@FXML
+	private TableColumn<Productos, String> colPrecio;
 	
 	@FXML
 	private TableView<Categoria> tblCategorias;
@@ -48,7 +51,7 @@ public class ConfiguracionesController extends AnchorPane {
 	@FXML
 	private Button btnEliminarEntidad;
 	@FXML
-	private TextField txtEntidadNombre;
+	private TextArea txtEntidadNombre;
 	@FXML
 	private TextField txtEntidadCodigo;
 	@FXML
@@ -94,7 +97,7 @@ public class ConfiguracionesController extends AnchorPane {
 	
 	/*Tab categorias*/
 	@FXML
-	private TextField txtCategoriaNombre;	
+	private TextArea txtCategoriaNombre;
 
 	private ClientesPersistence clientesPersistence;
 	private ProductosPersistence productosPersistence;
@@ -256,7 +259,7 @@ public class ConfiguracionesController extends AnchorPane {
 		switch (Usuarios.getPerfilLogeado()) {
 		case Usuarios.P_SUPERVISOR:
 			break;
-		case Usuarios.P_OPERADOR:
+		case Usuarios.P_CAJA:
 			tabUsuarios.setDisable(true);
 			break;
 		default:
@@ -296,17 +299,25 @@ public class ConfiguracionesController extends AnchorPane {
 			public Long getValue() {
 				return cellData.getValue().getId();
 			}
-
 		});
 
 		colNombre.setCellValueFactory(cellData -> new ObservableValueBase<String>() {
 
 			@Override
 			public String getValue() {
-				return cellData.getValue().getNombre().toString();
+				return cellData.getValue().getNombre();
 			}
 		});
-		
+
+
+		colPrecio.setCellValueFactory(cellData -> new ObservableValueBase<String>() {
+
+			@Override
+			public String getValue() {
+				return cellData.getValue().getPrecio().toString();
+			}
+		});
+
 		colCategoriaId.setCellValueFactory(cellData -> new ObservableValueBase<Long>() {
 
 			@Override
@@ -319,7 +330,7 @@ public class ConfiguracionesController extends AnchorPane {
 
 			@Override
 			public String getValue() {
-				return cellData.getValue().getNombre().toString();
+				return cellData.getValue().getNombre();
 			}
 		});
 	}

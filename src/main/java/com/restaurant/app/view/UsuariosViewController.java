@@ -143,7 +143,7 @@ public class UsuariosViewController extends AnchorPane implements Initializable{
 		
 		perf = new Perfiles();
 		perf.setId(3);
-		perf.setNombre(Usuarios.P_OPERADOR);
+		perf.setNombre(Usuarios.P_CAJA);
 		tblPerfiles.getItems().add(perf);		
 	}
 	

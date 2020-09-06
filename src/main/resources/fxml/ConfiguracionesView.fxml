@@ -5,7 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="425.0" prefWidth="930.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.app.view.ConfiguracionesController">
+<AnchorPane prefHeight="540.0" prefWidth="930.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.app.view.ConfiguracionesController">
    <children>
       <VBox prefHeight="428.0" prefWidth="611.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -34,10 +34,11 @@
                                                    <children>
                                                       <VBox prefHeight="539.0" prefWidth="153.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                          <children>
-                                                            <TableView fx:id="tblEntidades" onMouseClicked="#handleTblEntidadesSelected" prefHeight="314.0" prefWidth="210.0">
+                                                            <TableView fx:id="tblEntidades" onMouseClicked="#handleTblEntidadesSelected" prefHeight="404.0" prefWidth="317.0">
                                                               <columns>
-                                                                <TableColumn fx:id="colNombre" prefWidth="200.0" text="Nombre" />
+                                                                <TableColumn fx:id="colNombre" prefWidth="230.0" text="Nombre" />
                                                                   <TableColumn fx:id="colCodigo" prefWidth="120.0" text="Codigo" visible="false" />
+                                                                  <TableColumn fx:id="colPrecio" text="Precio" />
                                                               </columns>
                                                             </TableView>
                                                             <HBox alignment="CENTER" prefHeight="40.0" prefWidth="190.0" spacing="10.0">
@@ -71,20 +72,20 @@
                                                         <content>
                                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                                <children>
-                                                                  <GridPane layoutX="14.0" layoutY="14.0" prefHeight="156.0" prefWidth="359.0">
+                                                                  <GridPane layoutX="14.0" layoutY="14.0" prefHeight="245.0" prefWidth="359.0">
                                                                     <columnConstraints>
                                                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="249.0" minWidth="10.0" prefWidth="135.0" />
                                                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="247.0" minWidth="10.0" prefWidth="244.0" />
                                                                     </columnConstraints>
                                                                     <rowConstraints>
-                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints maxHeight="73.0" minHeight="10.0" prefHeight="73.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints maxHeight="78.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints maxHeight="76.0" minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
                                                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                                     </rowConstraints>
                                                                      <children>
                                                                         <Label fx:id="lblNombre" text="Nombre" />
-                                                                        <TextField fx:id="txtEntidadNombre" GridPane.columnIndex="1" />
+                                                                        <TextArea fx:id="txtEntidadNombre" GridPane.columnIndex="1" />
                                                                         <Label fx:id="lblCodigo" text="Codigo" GridPane.rowIndex="1" />
                                                                         <Label fx:id="lblPrecio" text="Precio" GridPane.rowIndex="2" />
                                                                         <TextField fx:id="txtEntidadCodigo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -93,7 +94,7 @@
                                                                         <ComboBox fx:id="cbxCategorias" prefHeight="25.0" prefWidth="234.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />                                                     
                                                                      </children>
                                                                   </GridPane>
-                                                                  <Button fx:id="btnAplicarEntidad" layoutX="14.0" layoutY="190.0" mnemonicParsing="false" onAction="#handleAplicarEntidades" text="Aplicar">
+                                                                  <Button fx:id="btnAplicarEntidad" layoutX="14.0" layoutY="285.0" mnemonicParsing="false" onAction="#handleAplicarEntidades" text="Aplicar">
                                                                      <graphic>
                                                                         <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                                            <image>
@@ -132,9 +133,9 @@
                                                    <children>
                                                       <VBox prefHeight="539.0" prefWidth="153.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                          <children>
-                                                            <TableView fx:id="tblCategorias" onMouseClicked="#handleTblCategoriasSelected" prefHeight="314.0" prefWidth="210.0">
+                                                            <TableView fx:id="tblCategorias" onMouseClicked="#handleTblCategoriasSelected" prefHeight="387.0" prefWidth="317.0">
                                                                <columns>
-                                                                  <TableColumn fx:id="colCategoriaNombre" prefWidth="200.0" text="Nombre" />
+                                                                  <TableColumn fx:id="colCategoriaNombre" prefWidth="260.0" text="Nombre" />
                                                                   <TableColumn fx:id="colCategoriaId" prefWidth="120.0" text="Codigo" visible="false" />
                                                                </columns>
                                                             </TableView>
@@ -170,10 +171,10 @@
                                                          <content>
                                                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                                <children>
-                                                                  <GridPane layoutX="14.0" layoutY="14.0" prefHeight="51.0" prefWidth="359.0">
+                                                                  <GridPane layoutX="14.0" layoutY="14.0" prefHeight="68.0" prefWidth="359.0">
                                                                      <children>
                                                                         <Label fx:id="lblNombre1" text="Nombre" />
-                                                                        <TextField fx:id="txtCategoriaNombre" GridPane.columnIndex="1" />
+                                                                        <TextArea fx:id="txtCategoriaNombre" GridPane.columnIndex="1" />
                                                                      </children>
                                                                      <columnConstraints>
                                                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="249.0" minWidth="10.0" prefWidth="135.0" />
@@ -183,7 +184,7 @@
                                                                         <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
                                                                      </rowConstraints>
                                                                   </GridPane>
-                                                                  <Button fx:id="btnAplicarCategoria" layoutX="14.0" layoutY="85.0" mnemonicParsing="false" onAction="#handleAplicarCategoria" text="Aplicar">
+                                                                  <Button fx:id="btnAplicarCategoria" layoutX="14.0" layoutY="101.0" mnemonicParsing="false" onAction="#handleAplicarCategoria" text="Aplicar">
                                                                      <graphic>
                                                                         <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                                            <image>

@@ -17,6 +17,7 @@ import com.restaurant.app.view.IView;
 import javafx.beans.value.ObservableValueBase;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -26,6 +27,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
@@ -41,12 +43,14 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		OP_DESCUENTO,
 		OP_PRECIO
 	}
-	
+
 	private OPERACIONES currentOp;
 	private Stage stage;
 	private String user;
 	private String perfil;
 
+
+	private boolean loadDataIsFisnished;
 	private Map<String, Venta> ventas;
 	private POSView posView;
 
@@ -86,7 +90,7 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 
 	@Override
 	public void initialize(URL url, ResourceBundle resouces) {
-		this.ventas = new HashMap<>();
+		this.loadDataIsFisnished = false;
 		this.user = "Leonel";
 		this.perfil = "";
 		currentOp = OPERACIONES.OP_CANTIDAD;
@@ -97,6 +101,29 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		lineaDeVentaPersistence = new LineaDeVentaPersistenceJdbc();
 		parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();
 		categoriasPersistence = new CategoriasPersistenceJdbc();
+
+		setValueToColumns();
+	}
+
+	private void loadOrdersPendingToCancel(){
+		List<Venta> ventasPending = ventaPersistence.getVentasPending();
+		tPanePedidos.getTabs().clear();
+		for(Venta v: ventasPending){
+			List<LineaDeVenta> lineaDeVentas = lineaDeVentaPersistence.findLineaDeVentaForVentaId(v.getId());
+			for(LineaDeVenta lineaDeVenta: lineaDeVentas)
+				lineaDeVenta.setProducto(productosPersistence.findById(Long.valueOf(lineaDeVenta.getProductoId())));
+
+			v.setLineaDeVentaList(lineaDeVentas);
+			ventas.put(v.getId().toString(), v);
+			tPanePedidos.
+					getTabs().
+					add(createTab(v.getId().toString(), v.getMesa()));
+		}
+		refreshTabPanel();
+		loadDataIsFisnished = true;
+	}
+
+	private void setValueToColumns(){
 		colProductoNombre.setCellValueFactory(cellData -> new ObservableValueBase<String>() {
 
 			@Override
@@ -125,7 +152,7 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 
 			@Override
 			public String getValue() {
-			return (cellData.getValue().getDesc() == null? "":cellData.getValue().getDesc());
+				return (cellData.getValue().getDesc() == null? "":cellData.getValue().getDesc());
 			}
 		});
 
@@ -141,52 +168,44 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 	@Override
 	public void setStage(Stage stage) {
 		this.stage = stage;
+		this.stage.setOnHiding(new EventHandler<WindowEvent>() {
+
+			@Override
+			public void handle(WindowEvent event) {
+				boolean isClose =Message.option("Seguro que quiere cerrar la ventana?");
+				if(isClose){
+					saveLastOrderAndClear();
+				}
+			}
+		});
 	}
 
 	public void setParent(POSView posView, Map<String, Venta> ventas){
 		this.posView = posView;
 		this.ventas = (ventas == null? new HashMap<>(): ventas);
-		if(ventas != null){
-			tPanePedidos.getTabs().clear();
-			Iterator<Map.Entry<String, Venta>> it = ventas.entrySet().iterator();
-			// iterating every set of entry in the HashMap.
-			while (it.hasNext()) {
-				Map.Entry<String, Venta> v = (Map.Entry<String, Venta>) it.next();
-				Tab t =new Tab();
-				t.setId(String.valueOf(v.getValue().getId()));
-				t.setText(v.getValue().getMesa());
-				tPanePedidos.getTabs().add(t);
-			}
-
-			if (tPanePedidos.getTabs().size() > 0) {
-				tPanePedidos.getSelectionModel().select(0);
-
-				tblProductos.getItems().addAll(ventas.get(tPanePedidos.getSelectionModel().getSelectedItem().getId()).getLineaDeVentaList());
-				tblProductos.refresh();
-			}
-		}
+		loadOrdersPendingToCancel();
 	}
-	
+
 	@FXML
 	public void handleBtn1(Event e) {
 		operationItem("1");
 	}
-	
+
 	@FXML
 	public void handleBtn2(Event e) {
 		operationItem("2");
 	}
-	
+
 	@FXML
 	public void handleBtn3(Event e) {
 		operationItem("3");
 	}
-	
+
 	@FXML
 	public void handleBtn4(Event e) {
 		operationItem("4");
 	}
-	
+
 	@FXML
 	public void handleBtn5(Event e) {
 		operationItem("5");
@@ -196,32 +215,32 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 	public void handleBtn6(Event e) {
 		operationItem("6");
 	}
-	
+
 	@FXML
 	public void handleBtn7(Event e) {
 		operationItem("7");
 	}
-	
+
 	@FXML
 	public void handleBtn8(Event e) {
 		operationItem("8");
 	}
-	
+
 	@FXML
 	public void handleBtn9(Event e) {
 		operationItem("9");
 	}
-	
+
 	@FXML
 	public void handleBtn0(Event e) {
 		operationItem("0");
 	}
-	
+
 	@FXML
 	public void handleBtnComa(Event e) {
 		operationItem(".");
 	}
-	
+
 	@FXML
 	public void handleBtnPrecio(Event e) {
 		currentOp = OPERACIONES.OP_PRECIO;
@@ -253,13 +272,13 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		currentOp = OPERACIONES.OP_CANTIDAD;
 		operationItem(null);
 	}
-	
+
 	@FXML
 	public void handleBtnDesc(Event e) {
 		currentOp = OPERACIONES.OP_DESCUENTO;
 		operationItem(null);
 	}
-	
+
 	@FXML
 	public void handleBtnPagar(Event e) {
 		if(tblProductos.getItems().isEmpty()){
@@ -269,7 +288,7 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 			this.posView.showSecondScene(ventas, ventas.get(tPanePedidos.getSelectionModel().getSelectedItem().getId()));
 		}
 	}
-	
+
 	@FXML
 	public void handleBtnPedir(Event e) {
 		if(tblProductos.getItems().isEmpty()){
@@ -335,105 +354,15 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		}
 		lblTotal.setText("0");
 
-		Tab t = new Tab();
-		BorderPane borderPane = new BorderPane();
-		ScrollPane sp = new ScrollPane();
-		borderPane.setCenter(sp);
-		GridPane gp = new GridPane();
-		gp.setHgap(5);
-		gp.setVgap(5);
-
-		Productos p = null;
-		List<Productos> productosList = productosPersistence.findAll();
-		final int count = productosList.size();
-		int countVertical = 0;
-		int countHorizontal = 0;
-		for(int i = 0; i < count; i++){
-			p = productosList.get(i);
-			final Button b = new Button(p.getNombre());
-			b.setId(p.getId().toString());
-			b.setOnAction(event -> {
-				boolean exist = false;
-				Productos pNewTemp = productosPersistence.findById(Long.valueOf(b.getId()));
-				for(LineaDeVenta lineaTemp: tblProductos.getItems()){
-					if(lineaTemp.getProductoId().longValue() == pNewTemp.getId().longValue()){
-						exist = true;
-						lineaTemp.setCant(String.valueOf(Integer.valueOf(lineaTemp.getCant()).intValue() + 1));
-						lineaTemp.setSubTotal(new BigDecimal(pNewTemp.getPrecio().doubleValue() * Integer.valueOf(lineaTemp.getCant()).intValue()));
-						break;
-					}
-				}
-
-				if(!exist){
-					LineaDeVenta lineaDeVenta  = new LineaDeVenta();
-					lineaDeVenta.setProductoId(pNewTemp.getId().intValue());
-					lineaDeVenta.setProducto(pNewTemp);
-					lineaDeVenta.setCant("1");
-					lineaDeVenta.setSubTotal(new BigDecimal(pNewTemp.getPrecio().doubleValue()));
-					tblProductos.getItems().add(lineaDeVenta);
-					tblProductos.getSelectionModel().select(lineaDeVenta);
-				} else
-					tblProductos.refresh();
-
-				calculateTotal(tblProductos.getItems());
-			});
-			b.setMinHeight(100);
-			b.setMinWidth(100);
-			GridPane.setMargin(b, new Insets(10, 0, 0, 10));
-			gp.add(b, countHorizontal, countVertical);
-			countHorizontal++;
-			if(i > 4 && (i % 5) == 0){
-				countVertical++;
-				countHorizontal=0;
-			}
-		}
-		sp.setContent(gp);
-
-		//Nota en bottom
-		VBox vNote = new VBox();
-		vNote.getChildren().add(new Label("Nota:"));
-		txtNote = new TextArea();
-		txtNote.setMinHeight(10);
-		vNote.getChildren().add(txtNote);
-		borderPane.setBottom(vNote);
-
 		Venta venta = new Venta();
 		venta.setMesa(mesa);
 		venta.setFecha(new Date());
 		venta.setPagado(false);
+		venta.setLineaDeVentaList(new ArrayList<>());
 		venta = ventaPersistence.save(venta);
 		ventas.put(String.valueOf(venta.getId().longValue()), venta);
-		t.setId(String.valueOf(venta.getId()));
-		t.setText(mesa);
-		t.setContent(borderPane);
-		t.setOnSelectionChanged (e -> {
-				if(t.isSelected()){
-					tblProductos.getItems().clear();
-					if(ventas.containsKey(t.getText())){
-						Venta v = ventas.get(t.getId());
-						tblProductos.getItems().addAll(v.getLineaDeVentaList());
-						tblProductos.refresh();
-						if(tblProductos.getItems().size() > 0) tblProductos.getSelectionModel().select(0);
+		Tab t = createTab(venta.getId().toString(), mesa);
 
-						calculateTotal(tblProductos.getItems());
-					}
-				} else {
-					saveLastOrderAndClear();
-				}
-			}
-		);
-		t.setOnCloseRequest(event -> {
-			if(t.isSelected()) {
-				if (ventas.containsKey(t.getId())) {
-					final boolean option = Message.option("Quiere cancelar el Pedido de " + t.getText() + " ?");
-					if(option){
-						tblProductos.getItems().clear();
-						Venta v = ventas.get(t.getId());
-						this.ventaPersistence.cancel(v.getId());
-					}
-				}
-			}
-		});
 		tPanePedidos.getTabs().add(t);
 		tPanePedidos.getSelectionModel().select(t);
 	}
@@ -449,7 +378,8 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 			venta.setMesa(tPanePedidos.getSelectionModel().getSelectedItem().getText());
 			venta.setFecha(new Date());
 			venta.setPagado(false);
-			venta.setImporte(new BigDecimal(Double.valueOf(lblTotal.getText())));
+			if(!lblTotal.getText().isEmpty())
+				venta.setImporte(new BigDecimal(Double.valueOf(lblTotal.getText())));
 			venta = ventaPersistence.save(venta);
 			lineaDeVentaPersistence.cleanForVentaId(venta.getId());
 
@@ -467,7 +397,7 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 			currentOp = OPERACIONES.OP_CANTIDAD;
 		}
 	}
-	
+
 	private void operationItem(String valor) {
 		if(!tblProductos.getItems().isEmpty()){
 			btnCant.getStyleClass().removeAll("button-active");
@@ -532,5 +462,113 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 		BigDecimal bd = BigDecimal.valueOf(total);
 		bd = bd.setScale(3, RoundingMode.HALF_UP);
 		lblTotal.setText(String.valueOf(bd.doubleValue()));
+	}
+
+	private Tab createTab(String id, String name){
+		Tab t = new Tab();
+		t.setId(String.valueOf(id));
+		t.setText(name);
+
+		BorderPane borderPane = new BorderPane();
+		ScrollPane sp = new ScrollPane();
+		borderPane.setCenter(sp);
+		GridPane gp = new GridPane();
+		gp.setHgap(5);
+		gp.setVgap(5);
+
+		Productos p = null;
+		List<Productos> productosList = productosPersistence.findAll();
+		final int count = productosList.size();
+		int countVertical = 0;
+		int countHorizontal = 0;
+		for(int i = 0; i < count; i++){
+			p = productosList.get(i);
+			final Button b = new Button(p.getNombre());
+			b.setId(p.getId().toString());
+			b.setOnAction(event -> {
+				boolean exist = false;
+				Productos pNewTemp = productosPersistence.findById(Long.valueOf(b.getId()));
+				for(LineaDeVenta lineaTemp: tblProductos.getItems()){
+					if(lineaTemp.getProductoId().longValue() == pNewTemp.getId().longValue()){
+						exist = true;
+						lineaTemp.setCant(String.valueOf(Integer.valueOf(lineaTemp.getCant()).intValue() + 1));
+						lineaTemp.setSubTotal(new BigDecimal(pNewTemp.getPrecio().doubleValue() * Integer.valueOf(lineaTemp.getCant()).intValue()));
+						break;
+					}
+				}
+
+				if(!exist){
+					LineaDeVenta lineaDeVenta  = new LineaDeVenta();
+					lineaDeVenta.setProductoId(pNewTemp.getId().intValue());
+					lineaDeVenta.setProducto(pNewTemp);
+					lineaDeVenta.setCant("1");
+					lineaDeVenta.setSubTotal(new BigDecimal(pNewTemp.getPrecio().doubleValue()));
+					tblProductos.getItems().add(lineaDeVenta);
+					tblProductos.getSelectionModel().select(lineaDeVenta);
+				} else
+					tblProductos.refresh();
+
+				calculateTotal(tblProductos.getItems());
+			});
+			b.setMinHeight(100);
+			b.setMinWidth(100);
+			GridPane.setMargin(b, new Insets(10, 0, 0, 10));
+			gp.add(b, countHorizontal, countVertical);
+			countHorizontal++;
+			if(i > 4 && (i % 5) == 0){
+				countVertical++;
+				countHorizontal=0;
+			}
+		}
+		sp.setContent(gp);
+
+		//Nota en bottom
+		VBox vNote = new VBox();
+		vNote.getChildren().add(new Label("Nota:"));
+		txtNote = new TextArea();
+		txtNote.setMinHeight(10);
+		vNote.getChildren().add(txtNote);
+		borderPane.setBottom(vNote);
+		t.setContent(borderPane);
+		t.setOnSelectionChanged (e -> {
+			if (loadDataIsFisnished) {
+				if (t.isSelected()) {
+					tblProductos.getItems().clear();
+					if (this.ventas.containsKey(t.getId())) {
+						Venta v = this.ventas.get(t.getId());
+						tblProductos.getItems().addAll(v.getLineaDeVentaList());
+						tblProductos.refresh();
+						if (tblProductos.getItems().size() > 0) tblProductos.getSelectionModel().select(0);
+
+						calculateTotal(tblProductos.getItems());
+					}
+				} else {
+					saveLastOrderAndClear();
+				}
+			}
+		});
+		t.setOnCloseRequest(event -> {
+			if(t.isSelected()) {
+				if (ventas.containsKey(t.getId())) {
+					final boolean option = Message.option("Quiere cancelar el Pedido de " + t.getText() + " ?");
+					if(option){
+						tblProductos.getItems().clear();
+						Venta v = ventas.get(t.getId());
+						this.ventaPersistence.cancel(v.getId());
+					}
+				}
+			}
+		});
+
+		return t;
+	}
+
+	private void refreshTabPanel(){
+		if (tPanePedidos.getTabs().size() > 0) {
+			tPanePedidos.getSelectionModel().select(0);
+
+			tblProductos.getItems().addAll(ventas.get(tPanePedidos.getSelectionModel().getSelectedItem().getId()).getLineaDeVentaList());
+			tblProductos.refresh();
+		}
 	}
 }

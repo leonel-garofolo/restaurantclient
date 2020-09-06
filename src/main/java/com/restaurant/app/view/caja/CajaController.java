@@ -1,6 +1,9 @@
 package com.restaurant.app.view.caja;
 
-import com.restaurant.app.model.*;
+import com.restaurant.app.model.LineaDeVenta;
+import com.restaurant.app.model.ParametrosGlobales;
+import com.restaurant.app.model.Productos;
+import com.restaurant.app.model.Venta;
 import com.restaurant.app.persistence.*;
 import com.restaurant.app.persistence.impl.jdbc.*;
 import com.restaurant.app.printer.pos.CocinaDocument;
@@ -419,6 +422,18 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 				}
 			}
 		);
+		t.setOnCloseRequest(event -> {
+			if(t.isSelected()) {
+				if (ventas.containsKey(t.getId())) {
+					final boolean option = Message.option("Quiere cancelar el Pedido de " + t.getText() + " ?");
+					if(option){
+						tblProductos.getItems().clear();
+						Venta v = ventas.get(t.getId());
+						this.ventaPersistence.cancel(v.getId());
+					}
+				}
+			}
+		});
 		tPanePedidos.getTabs().add(t);
 		tPanePedidos.getSelectionModel().select(t);
 	}

@@ -295,4 +295,18 @@ public class VentaPersistenceJdbc extends GenericJdbcDAO<Venta> implements Venta
 		}
 		return ventas;
 	}
+
+    @Override
+    public void cancel(long ventaId) {
+		Connection conn= null;
+		Statement st= null;
+		try{
+			conn = getConnection();
+			st = conn.createStatement();
+			st.execute("update venta set cancel = current_date() where id = " + ventaId);
+		}catch (SQLException e){
+			e.printStackTrace();
+			closeConnection(conn, st);
+		}
+    }
 }

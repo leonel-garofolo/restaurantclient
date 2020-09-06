@@ -8,5 +8,6 @@ import java.util.List;
 public interface VentaPersistence extends CommonPersistence<Venta>{
 
     List<Venta> findVentasForDate(Date fechaDesde, Date fechaHasta);
+    void cancel(long ventaId);
 
 }

@@ -28,9 +28,22 @@
          </left>
           <center>
               <VBox prefHeight="529.0" prefWidth="1085.0" spacing="10.0">
+              <HBox prefHeight="37.0" prefWidth="985.0">
+                  <children>
+                      <Label prefHeight="37.0" prefWidth="103.0" text="Descuento">
+                          <padding>
+                              <Insets left="20.0" />
+                          </padding>
+                      </Label>
+                      <TextField fx:id="txtDescuento" onKeyReleased="#handleChangeDescuento" prefHeight="39.0" prefWidth="131.0">
+                          <HBox.margin>
+                              <Insets left="30.0" />
+                          </HBox.margin></TextField>
+                  </children>
+              </HBox>
                <HBox prefHeight="42.0" prefWidth="396.0">
                   <children>
-                     <Label prefHeight="42.0" prefWidth="92.0" text="Importe:">
+                     <Label prefHeight="42.0" prefWidth="134.0" text="Importe:">
                         <padding>
                            <Insets left="20.0" />
                         </padding>
@@ -40,20 +53,20 @@
                </HBox>
                <HBox prefHeight="42.0" prefWidth="396.0">
                   <children>
-                     <Label prefHeight="37.0" prefWidth="60.0" text="Pago">
+                     <Label prefHeight="37.0" prefWidth="137.0" text="Pago">
                         <padding>
                            <Insets left="20.0" />
                         </padding>
                      </Label>
                      <TextField fx:id="txtPago" prefHeight="39.0" prefWidth="131.0">
                         <HBox.margin>
-                           <Insets left="30.0" />
+                           <Insets />
                         </HBox.margin></TextField>
                   </children>
                </HBox>
                <HBox prefHeight="57.0" prefWidth="396.0">
                   <children>
-                     <Label prefHeight="40.0" prefWidth="89.0" text="Vuelto: ">
+                     <Label prefHeight="40.0" prefWidth="136.0" text="Vuelto: ">
                         <padding>
                            <Insets left="20.0" />
                         </padding>

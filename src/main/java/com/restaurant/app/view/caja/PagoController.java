@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -21,10 +22,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PagoController extends AnchorPane implements Initializable, IView {
+
     private POSView posView;
     private Venta venta;
     private VentaPersistence ventaPersistence;
 
+    @FXML
+    private TextField txtDescuento;
     @FXML
     private Label lblImporte;
     @FXML
@@ -36,19 +40,30 @@ public class PagoController extends AnchorPane implements Initializable, IView {
     public void initialize(URL location, ResourceBundle resources) {
         this.ventaPersistence = new VentaPersistenceJdbc();
         txtPago.textProperty().addListener((observable, oldValue, newValue) -> {
-            double vuelto = 0f;
-            try{
-                vuelto = Double.valueOf(newValue).doubleValue() - Double.valueOf(lblImporte.getText());
-                lblVuelto.setText(String.valueOf(vuelto));
-            }catch (NumberFormatException e){
+            calculateVuelto(newValue);
+        });
+        txtDescuento.setOnKeyTyped(event -> {
+            Matcher matcher = Pattern.compile("^-?\\d+(?:,\\d+)?(?:[Ee][-+]?\\d+)?$").matcher(event.getCharacter());
+            if (!matcher.find()) {
+                event.consume();
             }
         });
+
         txtPago.setOnKeyTyped(event -> {
             Matcher matcher = Pattern.compile("^-?\\d+(?:,\\d+)?(?:[Ee][-+]?\\d+)?$").matcher(event.getCharacter());
             if (!matcher.find()) {
                 event.consume();
             }
         });
+    }
+
+    private void calculateVuelto(String newValue){
+        double vuelto = 0f;
+        try{
+            vuelto = Double.valueOf(newValue).doubleValue() - Double.valueOf(lblImporte.getText());
+            lblVuelto.setText(String.valueOf(vuelto));
+        }catch (NumberFormatException e){
+        }
     }
 
     public void setParent(POSView posView){
@@ -64,6 +79,18 @@ public class PagoController extends AnchorPane implements Initializable, IView {
         this.venta = venta;
         this.lblImporte.setText(String.valueOf(venta.getImporte().doubleValue()));
         this.lblVuelto.setText("");
+    }
+
+    @FXML
+    public void handleChangeDescuento(KeyEvent actionEvent){
+        try{
+            double desc=  Double.valueOf(this.txtDescuento.getText());
+            double newImporte= this.venta.getImporte().doubleValue() - (this.venta.getImporte().doubleValue() * desc / 100);
+            this.lblImporte.setText(String.valueOf(newImporte));
+        }catch (Exception e){
+            this.lblImporte.setText(String.valueOf(this.venta.getImporte()));
+        }
+        calculateVuelto(txtPago.getText());
     }
 
     @FXML
@@ -134,12 +161,21 @@ public class PagoController extends AnchorPane implements Initializable, IView {
 
     @FXML
     public void handleBtnImprimir(ActionEvent actionEvent) {
-        if(this.venta != null &&
-            venta.getFormaDePago() != null &&
-                venta.getImporte() != null){
+        if(this.venta != null ){
+            if(venta.getFormaDePago() == null) {
+                Message.error("Debe seleccionar la forma de pago.");
+                return;
+            }
+
+            final Double vuelto = Double.valueOf(lblVuelto.getText());
+            if(vuelto < 0){
+                Message.error("El importe no puede ser un valor negativo.");
+                return;
+            }
             venta.setPagado(true);
             venta.setVuelto(new BigDecimal(lblVuelto.getText()));
             ventaPersistence.save(venta);
+            ventaPersistence.cancel(venta.getId());
             double importe = Double.valueOf(txtPago.getText().trim());
             if(importe > 0){
                 PrintTicket printTicket = new PrintTicket(this.venta.getId());

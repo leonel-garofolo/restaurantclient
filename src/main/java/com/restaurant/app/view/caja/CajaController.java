@@ -17,7 +17,6 @@ import com.restaurant.app.view.IView;
 import javafx.beans.value.ObservableValueBase;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -27,7 +26,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
@@ -168,14 +166,10 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 	@Override
 	public void setStage(Stage stage) {
 		this.stage = stage;
-		this.stage.setOnHiding(new EventHandler<WindowEvent>() {
-
-			@Override
-			public void handle(WindowEvent event) {
-				boolean isClose =Message.option("Seguro que quiere cerrar la ventana?");
-				if(isClose){
-					saveLastOrderAndClear();
-				}
+		this.stage.setOnHiding(event -> {
+			boolean isClose =Message.option("Seguro que quiere cerrar la ventana?");
+			if(isClose){
+				saveLastOrderAndClear();
 			}
 		});
 	}

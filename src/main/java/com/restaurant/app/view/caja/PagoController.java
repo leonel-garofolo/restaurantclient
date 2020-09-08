@@ -5,6 +5,7 @@ import com.restaurant.app.persistence.VentaPersistence;
 import com.restaurant.app.persistence.impl.jdbc.VentaPersistenceJdbc;
 import com.restaurant.app.services.PrintTicket;
 import com.restaurant.app.utils.Message;
+import com.restaurant.app.utils.UtilView;
 import com.restaurant.app.view.IView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,14 +44,14 @@ public class PagoController extends AnchorPane implements Initializable, IView {
             calculateVuelto(newValue);
         });
         txtDescuento.setOnKeyTyped(event -> {
-            Matcher matcher = Pattern.compile("^-?\\d+(?:,\\d+)?(?:[Ee][-+]?\\d+)?$").matcher(event.getCharacter());
+            Matcher matcher = Pattern.compile(UtilView.PRICES_REGULAR_EXPRESION).matcher(event.getCharacter());
             if (!matcher.find()) {
                 event.consume();
             }
         });
 
         txtPago.setOnKeyTyped(event -> {
-            Matcher matcher = Pattern.compile("^-?\\d+(?:,\\d+)?(?:[Ee][-+]?\\d+)?$").matcher(event.getCharacter());
+            Matcher matcher = Pattern.compile(UtilView.PRICES_REGULAR_EXPRESION).matcher(event.getCharacter());
             if (!matcher.find()) {
                 event.consume();
             }

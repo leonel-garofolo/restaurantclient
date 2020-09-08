@@ -10,6 +10,7 @@ import com.restaurant.app.persistence.impl.jdbc.ClientesPersistenceJdbc;
 import com.restaurant.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
 import com.restaurant.app.persistence.impl.jdbc.ProductosPersistenceJdbc;
 import com.restaurant.app.utils.Message;
+import com.restaurant.app.utils.UtilView;
 import javafx.beans.value.ObservableValueBase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,6 +21,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ConfiguracionesController extends AnchorPane {
 
@@ -37,6 +40,9 @@ public class ConfiguracionesController extends AnchorPane {
 
 	@FXML
 	private TableColumn<Productos, String> colPrecio;
+
+	@FXML
+	private TableColumn<Productos, String> colStock;
 	
 	@FXML
 	private TableView<Categoria> tblCategorias;
@@ -94,6 +100,8 @@ public class ConfiguracionesController extends AnchorPane {
 	private Label lblMov;
 	@FXML
 	private Label lblAcum;
+	@FXML
+	private TextField txtStock;
 	
 	/*Tab categorias*/
 	@FXML
@@ -131,6 +139,7 @@ public class ConfiguracionesController extends AnchorPane {
 			txtEntidadCodigo.setText(p.getCodigo());
 			txtEntidadNombre.setText(p.getNombre());			
 			txtEntidadPrecio.setText(String.valueOf(p.getPrecio()));
+			txtStock.setText(String.valueOf(p.getStock()));
 			
 			if(p.getCategoriaId() != null) {		
 				List<Categoria> categorias = cbxCategorias.getItems();
@@ -223,6 +232,7 @@ public class ConfiguracionesController extends AnchorPane {
 		txtEntidadCodigo.setText("");
 		txtEntidadNombre.setText("");	
 		txtEntidadPrecio.setText("");
+		txtStock.setText("");
 		cbxCategorias.setValue(null);
 	}
 	
@@ -246,6 +256,10 @@ public class ConfiguracionesController extends AnchorPane {
 		producto.setCodigo(txtEntidadCodigo.getText());
 		producto.setNombre(txtEntidadNombre.getText());
 		producto.setPrecio(Double.valueOf(txtEntidadPrecio.getText()));
+		if(!txtStock.getText().isEmpty()){
+			producto.setStock(Integer.valueOf(txtStock.getText()));
+		}
+
 		if(cbxCategorias.getSelectionModel().getSelectedItem() != null) {			
 			producto.setCategoriaId(cbxCategorias.getSelectionModel().getSelectedItem().getId());
 		}
@@ -266,6 +280,7 @@ public class ConfiguracionesController extends AnchorPane {
 			break;
 		}
 
+		initTextKeyControl();
 		initPersistence();
 		initTableView();		
 		initTextUpperCase();
@@ -279,6 +294,22 @@ public class ConfiguracionesController extends AnchorPane {
 	private void initTextUpperCase() {
 		txtEntidadNombre.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtEntidadNombre.setText(newValue.toUpperCase());
+		});
+	}
+
+	private void initTextKeyControl(){
+		txtEntidadPrecio.setOnKeyTyped(event -> {
+			Matcher matcher = Pattern.compile(UtilView.PRICES_REGULAR_EXPRESION).matcher(event.getCharacter());
+			if (!matcher.find()) {
+				event.consume();
+			}
+		});
+
+		txtStock.setOnKeyTyped(event -> {
+			Matcher matcher = Pattern.compile(UtilView.NUMBER_REGULAR_EXPRESION).matcher(event.getCharacter());
+			if (!matcher.find()) {
+				event.consume();
+			}
 		});
 	}
 
@@ -317,6 +348,15 @@ public class ConfiguracionesController extends AnchorPane {
 				return cellData.getValue().getPrecio().toString();
 			}
 		});
+
+		colStock.setCellValueFactory(cellData -> new ObservableValueBase<String>() {
+
+			@Override
+			public String getValue() {
+				return cellData.getValue().getStock().toString();
+			}
+		});
+
 
 		colCategoriaId.setCellValueFactory(cellData -> new ObservableValueBase<Long>() {
 

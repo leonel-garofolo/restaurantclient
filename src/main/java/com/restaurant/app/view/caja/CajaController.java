@@ -25,6 +25,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
@@ -479,13 +480,15 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 			p = productosList.get(i);
 			final Button b = new Button(p.getNombre());
 			b.setId(p.getId().toString());
+			b.setTextAlignment(TextAlignment.CENTER);
 			b.setOnAction(event -> {
 				boolean exist = false;
 				Productos pNewTemp = productosPersistence.findById(Long.valueOf(b.getId()));
 				for(LineaDeVenta lineaTemp: tblProductos.getItems()){
 					if(lineaTemp.getProductoId().longValue() == pNewTemp.getId().longValue()){
 						exist = true;
-						lineaTemp.setCant(String.valueOf(Integer.valueOf(lineaTemp.getCant()).intValue() + 1));
+						final Integer cant = Integer.valueOf(lineaTemp.getCant() != null ? lineaTemp.getCant() : "0").intValue();
+						lineaTemp.setCant(String.valueOf(cant + 1));
 						lineaTemp.setSubTotal(new BigDecimal(pNewTemp.getPrecio().doubleValue() * Integer.valueOf(lineaTemp.getCant()).intValue()));
 						break;
 					}

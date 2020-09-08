@@ -5,16 +5,15 @@
 
 package com.restaurant.app.persistence.impl.jdbc;
 
+import com.restaurant.app.model.Productos;
+import com.restaurant.app.persistence.ProductosPersistence;
+import com.restaurant.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
+
+import javax.inject.Named;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-
-import javax.inject.Named;
-
-import com.restaurant.app.model.Productos;
-import com.restaurant.app.persistence.ProductosPersistence;
-import com.restaurant.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 
 /**
  * Productos persistence implementation 
@@ -26,16 +25,16 @@ import com.restaurant.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 public class ProductosPersistenceJdbc extends GenericJdbcDAO<Productos> implements ProductosPersistence{
 
 	private final static String SQL_SELECT_ALL = 
-		"select id, codigo, nombre, precio, categoria_id from producto"; 
+		"select id, codigo, nombre, precio, stock, categoria_id from producto";
 
 	private final static String SQL_SELECT = 
-		"select id, codigo, nombre, precio, categoria_id from producto where id = ?";
+		"select id, codigo, nombre, precio, stock, categoria_id from producto where id = ?";
 
 	private final static String SQL_INSERT = 
-		"insert into producto ( codigo, nombre, precio, categoria_id ) values ( ?, ?, ?, ? )";
+		"insert into producto ( codigo, nombre, precio, stock, categoria_id ) values ( ?, ?, ?, ?, ? )";
 
 	private final static String SQL_UPDATE = 
-		"update producto set codigo = ?, nombre = ?, precio = ?, categoria_id= ? where id = ?";
+		"update producto set codigo = ?, nombre = ?, precio = ?, stock = ?, categoria_id= ? where id = ?";
 
 	private final static String SQL_DELETE = 
 		"delete from producto where id = ?";
@@ -43,10 +42,10 @@ public class ProductosPersistenceJdbc extends GenericJdbcDAO<Productos> implemen
 	private final static String SQL_COUNT_ALL = 
 		"select count(*) from producto";
 
-	private final static String SQL_COUNT = 
-		"select count(*) from producto where id = ?";
+	private final static String SQL_COUNT =
+			"select count(*) from producto where id = ?";
 
-    //----------------------------------------------------------------------
+	//----------------------------------------------------------------------
 	/**
 	 * DAO constructor
 	 */
@@ -75,6 +74,7 @@ public class ProductosPersistenceJdbc extends GenericJdbcDAO<Productos> implemen
 		setValue(ps, i++, producto.getCodigo() ) ; // "nombre" : java.lang.String
 		setValue(ps, i++, producto.getNombre() ) ; // "nombre" : java.lang.String
 		setValue(ps, i++, producto.getPrecio() ) ; // "nombre" : java.lang.String
+		setValue(ps, i++, producto.getStock() ) ;
 		
 		if(producto.getCategoriaId() != null) {
 			setValue(ps, i++, producto.getCategoriaId()) ; // "nombre" : java.lang.String	
@@ -88,6 +88,7 @@ public class ProductosPersistenceJdbc extends GenericJdbcDAO<Productos> implemen
 		setValue(ps, i++, producto.getCodigo() ) ; // "nombre" : java.lang.String
 		setValue(ps, i++, producto.getNombre() ) ; // "nombre" : java.lang.String
 		setValue(ps, i++, producto.getPrecio() ) ; // "nombre" : java.lang.String
+		setValue(ps, i++, producto.getStock() ) ;
 		if(producto.getCategoriaId() != null) {
 			setValue(ps, i++, producto.getCategoriaId()) ; // "nombre" : java.lang.String	
 		}	
@@ -98,7 +99,7 @@ public class ProductosPersistenceJdbc extends GenericJdbcDAO<Productos> implemen
 	//----------------------------------------------------------------------
 	/**
 	 * Creates a new instance of the bean and populates it with the given primary value(s)
-	 * @param codigo;
+	 * @param id;
 	 * @return the new instance
 	 */
 	private Productos newInstanceWithPrimaryKey( Long id ) {
@@ -123,6 +124,7 @@ public class ProductosPersistenceJdbc extends GenericJdbcDAO<Productos> implemen
 		producto.setCodigo(rs.getString("codigo")); // java.lang.String
 		producto.setNombre(rs.getString("nombre")); // java.lang.String
 		producto.setPrecio(rs.getDouble("precio")); // java.lang.String
+		producto.setStock(rs.getInt("stock"));
 		producto.setCategoriaId(rs.getLong("categoria_id")); // java.lang.String
 		if ( rs.wasNull() ) { producto.setCategoriaId(null); };
 		return producto ;

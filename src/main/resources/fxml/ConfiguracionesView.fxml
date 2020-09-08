@@ -28,17 +28,18 @@
                                     </AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
-                                          <SplitPane dividerPositions="0.34596375617792424" layoutX="118.0" layoutY="171.0" prefHeight="541.0" prefWidth="743.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <SplitPane dividerPositions="0.40712742980561556" layoutX="118.0" layoutY="171.0" prefHeight="541.0" prefWidth="743.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <items>
                                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                                    <children>
                                                       <VBox prefHeight="539.0" prefWidth="153.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                          <children>
-                                                            <TableView fx:id="tblEntidades" onMouseClicked="#handleTblEntidadesSelected" prefHeight="404.0" prefWidth="317.0">
+                                                            <TableView fx:id="tblEntidades" onMouseClicked="#handleTblEntidadesSelected" prefHeight="404.0" prefWidth="334.0">
                                                               <columns>
-                                                                <TableColumn fx:id="colNombre" prefWidth="230.0" text="Nombre" />
+                                                                <TableColumn fx:id="colNombre" prefWidth="200.0" text="Nombre" />
                                                                   <TableColumn fx:id="colCodigo" prefWidth="120.0" text="Codigo" visible="false" />
                                                                   <TableColumn fx:id="colPrecio" text="Precio" />
+                                                                  <TableColumn fx:id="colStock" prefWidth="75.0" text="Stock" />
                                                               </columns>
                                                             </TableView>
                                                             <HBox alignment="CENTER" prefHeight="40.0" prefWidth="190.0" spacing="10.0">
@@ -79,9 +80,10 @@
                                                                     </columnConstraints>
                                                                     <rowConstraints>
                                                                         <RowConstraints maxHeight="73.0" minHeight="10.0" prefHeight="73.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="78.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="76.0" minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints maxHeight="78.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints maxHeight="76.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints maxHeight="76.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                                                                     </rowConstraints>
                                                                      <children>
                                                                         <Label fx:id="lblNombre" text="Nombre" />
@@ -90,8 +92,10 @@
                                                                         <Label fx:id="lblPrecio" text="Precio" GridPane.rowIndex="2" />
                                                                         <TextField fx:id="txtEntidadCodigo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                                         <TextField fx:id="txtEntidadPrecio" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                                        <Label fx:id="lblCategoria" text="Categoria" GridPane.rowIndex="3" />
-                                                                        <ComboBox fx:id="cbxCategorias" prefHeight="25.0" prefWidth="234.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />                                                     
+                                                                        <Label fx:id="lblCategoria" text="Categoria" GridPane.rowIndex="4" />
+                                                                        <ComboBox fx:id="cbxCategorias" prefHeight="25.0" prefWidth="234.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                                        <Label text="Stock" GridPane.rowIndex="3" />
+                                                                        <TextField fx:id="txtStock" GridPane.columnIndex="1" GridPane.rowIndex="3" />                                                     
                                                                      </children>
                                                                   </GridPane>
                                                                   <Button fx:id="btnAplicarEntidad" layoutX="14.0" layoutY="285.0" mnemonicParsing="false" onAction="#handleAplicarEntidades" text="Aplicar">

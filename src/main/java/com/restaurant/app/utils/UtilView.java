@@ -1,22 +1,21 @@
 package com.restaurant.app.utils;
 
-import java.io.IOException;
-
-import org.apache.log4j.Logger;
-
 import com.restaurant.app.view.HerramientasController;
 import com.restaurant.app.view.IPOSView;
 import com.restaurant.app.view.IView;
-import com.restaurant.app.view.PrincipalController;
 import com.restaurant.app.view.caja.POSView;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class UtilView {
+
+	public static String NUMBER_REGULAR_EXPRESION = "^\\d$";
+	public static String PRICES_REGULAR_EXPRESION = "^-?\\d+(?:,\\d+)?(?:[Ee][-+]?\\d+)?$";
 
 	public static Stage openWindows(final Class parent, final String fxmlName, final String title) {
 		try {

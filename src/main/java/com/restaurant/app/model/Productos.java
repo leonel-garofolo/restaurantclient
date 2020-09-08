@@ -7,8 +7,6 @@
 package com.restaurant.app.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * Java bean for entity "productos"
@@ -23,6 +21,7 @@ public class Productos implements Serializable {
 	private String nombre;
 	private String cuit;
 	private Double precio;
+	private Integer stock;
 	private Long categoriaId;
 
 	/**
@@ -94,6 +93,13 @@ public class Productos implements Serializable {
 		this.precio = precio;
 	}
 
+	public Integer getStock() {
+		return stock;
+	}
+
+	public void setStock(Integer stock) {
+		this.stock = stock;
+	}
 
 	public Long getCategoriaId() {
 		return categoriaId;

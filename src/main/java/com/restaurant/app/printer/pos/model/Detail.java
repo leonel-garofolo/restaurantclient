@@ -5,7 +5,16 @@ import java.util.List;
 public class Detail {
 
     private List<Line> lines;
+    private String disc;
     private String total;
+
+    public String getDisc() {
+        return disc;
+    }
+
+    public void setDisc(String disc) {
+        this.disc = disc;
+    }
 
     public String getTotal() {
         return total;

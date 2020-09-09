@@ -41,6 +41,7 @@ public class Venta implements Serializable
     private List<LineaDeVenta> lineaDeVentaList ;  // BigDecimal
     private boolean pagado;
     private String mesa;
+    private BigDecimal disc;
 
 
     /**
@@ -161,6 +162,14 @@ public class Venta implements Serializable
 
     public void setMesa(String mesa) {
         this.mesa = mesa;
+    }
+
+    public BigDecimal getDisc() {
+        return disc;
+    }
+
+    public void setDisc(BigDecimal disc) {
+        this.disc = disc;
     }
 
     //----------------------------------------------------------------------

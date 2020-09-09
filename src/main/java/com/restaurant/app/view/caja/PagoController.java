@@ -175,6 +175,9 @@ public class PagoController extends AnchorPane implements Initializable, IView {
             }
             venta.setPagado(true);
             venta.setVuelto(new BigDecimal(lblVuelto.getText()));
+            if(!txtDescuento.getText().isEmpty()){
+                venta.setDisc(new BigDecimal(txtDescuento.getText()));
+            }
             ventaPersistence.save(venta);
             ventaPersistence.cancel(venta.getId());
             double importe = Double.valueOf(txtPago.getText().trim());

@@ -24,6 +24,10 @@ public class TicketDocument extends Document{
             for(Line l:detail.getLines()){
                 text += UtilString.hardString(l.getProductName().trim(), 20)  + "     " + l.getProductPrice().trim() + NEW_LINE;
             }
+
+            if(detail.getDisc() != null){
+                text += NEW_LINE + UtilString.hardString("Desc.:", 20) + "   " + detail.getDisc() + " %" ;
+            }
             text += NEW_LINE + UtilString.hardString("Total:", 20) + "     " + detail.getTotal() + NEW_LINE;
         }
         if(footer != null){

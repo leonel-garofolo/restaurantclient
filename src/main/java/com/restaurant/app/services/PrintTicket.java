@@ -1,6 +1,9 @@
 package com.restaurant.app.services;
 
-import com.restaurant.app.model.*;
+import com.restaurant.app.model.LineaDeVenta;
+import com.restaurant.app.model.ParametrosGlobales;
+import com.restaurant.app.model.Productos;
+import com.restaurant.app.model.Venta;
 import com.restaurant.app.persistence.*;
 import com.restaurant.app.persistence.impl.jdbc.*;
 import com.restaurant.app.printer.pos.PrinterService;
@@ -9,7 +12,6 @@ import com.restaurant.app.printer.pos.model.Detail;
 import com.restaurant.app.printer.pos.model.Footer;
 import com.restaurant.app.printer.pos.model.Header;
 import com.restaurant.app.printer.pos.model.Line;
-import com.restaurant.app.utils.UtilString;
 import com.sun.istack.internal.NotNull;
 import org.apache.log4j.Logger;
 
@@ -74,6 +76,9 @@ public class PrintTicket {
             line.add(l);
         }
         d.setLines(line);
+        if(venta.getDisc() != null){
+            d.setDisc(String.valueOf(venta.getDisc()));
+        }
         d.setTotal(venta.getImporte().toString());
         ticketDocument.setDetail(d);
 

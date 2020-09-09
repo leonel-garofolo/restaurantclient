@@ -24,16 +24,16 @@ import java.util.List;
 public class LineaDeVentaPersistenceJdbc extends GenericJdbcDAO<LineaDeVenta> implements LineaDeVentaPersistence {
 
 	private final static String SQL_SELECT_ALL = 
-		"select id, venta_id, precio, producto_id from linea_de_venta"; 
+		"select id, venta_id, precio, producto_id, cantidad from linea_de_venta";
 
 	private final static String SQL_SELECT = 
-		"select id, venta_id, precio, producto_id from linea_de_venta where id = ? and venta_id = ?";
+		"select id, venta_id, precio, producto_id, cantidad from linea_de_venta where id = ? and venta_id = ?";
 
 	private final static String SQL_INSERT = 
-		"insert into linea_de_venta ( id, venta_id, precio, producto_id ) values ( ?, ?, ?, ? )";
+		"insert into linea_de_venta ( id, venta_id, precio, producto_id, cantidad ) values ( ?, ?, ?, ?, ? )";
 
 	private final static String SQL_UPDATE = 
-		"update linea_de_venta set precio = ?, producto_id = ? where id = ? and venta_id = ?";
+		"update linea_de_venta set precio = ?, producto_id = ?, cantidad = ? where id = ? and venta_id = ?";
 
 	private final static String SQL_DELETE = 
 		"delete from linea_de_venta where id = ? and venta_id = ?";
@@ -74,6 +74,7 @@ public class LineaDeVentaPersistenceJdbc extends GenericJdbcDAO<LineaDeVenta> im
 		setValue(ps, i++, lineaDeVenta.getVentaId() ) ; // "venta_id" : java.lang.Integer
 		setValue(ps, i++, lineaDeVenta.getSubTotal() ) ; // "precio" : java.math.BigDecimal
 		setValue(ps, i++, lineaDeVenta.getProductoId() ) ; // "producto_id" : java.lang.Integer
+		setValue(ps, i++, Integer.valueOf(lineaDeVenta.getCant()) ) ;
 	}
 
     //----------------------------------------------------------------------
@@ -82,6 +83,7 @@ public class LineaDeVentaPersistenceJdbc extends GenericJdbcDAO<LineaDeVenta> im
 		//--- Set DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		setValue(ps, i++, lineaDeVenta.getSubTotal() ) ; // "precio" : java.math.BigDecimal
 		setValue(ps, i++, lineaDeVenta.getProductoId() ) ; // "producto_id" : java.lang.Integer
+		setValue(ps, i++, Integer.valueOf(lineaDeVenta.getCant()) ) ;
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
 		setValue(ps, i++, lineaDeVenta.getId() ) ; // "id" : java.lang.Integer
 		setValue(ps, i++, lineaDeVenta.getVentaId() ) ; // "venta_id" : java.lang.Integer
@@ -120,6 +122,9 @@ public class LineaDeVentaPersistenceJdbc extends GenericJdbcDAO<LineaDeVenta> im
 		if ( rs.wasNull() ) { lineaDeVenta.setSubTotal(null); }; // not primitive number => keep null value if any
 		lineaDeVenta.setProductoId(rs.getInt("producto_id")); // java.lang.Integer
 		if ( rs.wasNull() ) { lineaDeVenta.setProductoId(null); }; // not primitive number => keep null value if any
+
+		lineaDeVenta.setCant(String.valueOf(rs.getInt("cantidad"))); // java.lang.Integer
+		if ( rs.wasNull() ) { lineaDeVenta.setCant(null); };
 		return lineaDeVenta ;
 	}
 
@@ -302,9 +307,9 @@ public class LineaDeVentaPersistenceJdbc extends GenericJdbcDAO<LineaDeVenta> im
 				populateBean(rs, l);
 				lineaDeVentas.add(l);
 			}
-		}catch (Exception e){
+		} catch (Exception e){
 			e.printStackTrace();
-		}finally {
+		} finally {
 			closeConnection(conn, st);
 		}
 		return lineaDeVentas;

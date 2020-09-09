@@ -10,9 +10,7 @@ import com.restaurant.app.persistence.ProductosPersistence;
 import com.restaurant.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 
 import javax.inject.Named;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 /**
@@ -298,4 +296,33 @@ public class ProductosPersistenceJdbc extends GenericJdbcDAO<Productos> implemen
 		return SQL_COUNT_ALL ;
 	}
 
+	@Override
+	public void incrementStock(long productoId, int productoCount) {
+		Connection conn= null;
+		Statement st= null;
+		try{
+			conn = getConnection();
+			st = conn.createStatement();
+			st.execute("update producto set stock = stock + " + productoCount +" where id = " + productoId);
+		}catch (SQLException e){
+			e.printStackTrace();
+		} finally {
+			closeConnection(conn, st);
+		}
+	}
+
+	@Override
+	public void decrementStock(long productoId, int productoCount) {
+		Connection conn= null;
+		Statement st= null;
+		try{
+			conn = getConnection();
+			st = conn.createStatement();
+			st.execute("update producto set stock = stock - " + productoCount +" where id = " + productoId);
+		}catch (SQLException e){
+			e.printStackTrace();
+		}finally {
+			closeConnection(conn, st);
+		}
+	}
 }

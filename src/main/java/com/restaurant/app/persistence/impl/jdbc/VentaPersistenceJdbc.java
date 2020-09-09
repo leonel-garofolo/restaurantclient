@@ -291,6 +291,7 @@ public class VentaPersistenceJdbc extends GenericJdbcDAO<Venta> implements Venta
 			rs.close();
 		}catch (SQLException e){
 			e.printStackTrace();
+		}finally {
 			closeConnection(conn, st);
 		}
 		return ventas;
@@ -314,6 +315,7 @@ public class VentaPersistenceJdbc extends GenericJdbcDAO<Venta> implements Venta
 			rs.close();
 		}catch (SQLException e){
 			e.printStackTrace();
+		}finally {
 			closeConnection(conn, st);
 		}
 		return ventas;
@@ -329,6 +331,7 @@ public class VentaPersistenceJdbc extends GenericJdbcDAO<Venta> implements Venta
 			st.execute("update venta set cancel = current_timestamp() where id = " + ventaId);
 		}catch (SQLException e){
 			e.printStackTrace();
+		} finally {
 			closeConnection(conn, st);
 		}
     }

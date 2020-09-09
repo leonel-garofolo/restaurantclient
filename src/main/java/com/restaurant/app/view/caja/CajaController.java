@@ -487,9 +487,11 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 				for(LineaDeVenta lineaTemp: tblProductos.getItems()){
 					if(lineaTemp.getProductoId().longValue() == pNewTemp.getId().longValue()){
 						exist = true;
-						final Integer cant = Integer.valueOf(lineaTemp.getCant() != null ? lineaTemp.getCant() : "0").intValue();
-						lineaTemp.setCant(String.valueOf(cant + 1));
+						final Integer cant = Integer.valueOf(lineaTemp.getCant() != null ? lineaTemp.getCant() : "0").intValue() + 1;
+						lineaTemp.setCant(String.valueOf(cant));
 						lineaTemp.setSubTotal(new BigDecimal(pNewTemp.getPrecio().doubleValue() * Integer.valueOf(lineaTemp.getCant()).intValue()));
+
+						productosPersistence.decrementStock(pNewTemp.getId(), 1);
 						break;
 					}
 				}
@@ -500,11 +502,12 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 					lineaDeVenta.setProducto(pNewTemp);
 					lineaDeVenta.setCant("1");
 					lineaDeVenta.setSubTotal(new BigDecimal(pNewTemp.getPrecio().doubleValue()));
+
+					productosPersistence.decrementStock(pNewTemp.getId(), 1);
 					tblProductos.getItems().add(lineaDeVenta);
 					tblProductos.getSelectionModel().select(lineaDeVenta);
-				} else
-					tblProductos.refresh();
-
+				}
+				tblProductos.refresh();
 				calculateTotal(tblProductos.getItems());
 			});
 			b.setMinHeight(100);
@@ -549,6 +552,12 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 				if (ventas.containsKey(t.getId())) {
 					final boolean option = Message.option("Quiere cancelar el Pedido de " + t.getText() + " ?");
 					if(option){
+						final List<LineaDeVenta> lineaDeVentasToClean = tblProductos.getItems();
+						for(LineaDeVenta ll : lineaDeVentasToClean){
+							long productoId = ll.getProductoId();
+							int productoCount = Integer.valueOf(ll.getCant());
+							productosPersistence.incrementStock(productoId, productoCount);
+						}
 						tblProductos.getItems().clear();
 						Venta v = ventas.get(t.getId());
 						this.ventaPersistence.cancel(v.getId());

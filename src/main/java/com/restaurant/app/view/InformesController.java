@@ -36,6 +36,10 @@ public class InformesController extends AnchorPane implements Initializable {
 
     @FXML
     private TableColumn<Venta, String> colFormaPago;
+
+    @FXML
+    private TableColumn<Venta, Double> colDisc;
+
     @FXML
     private TableColumn<Venta, Double> colImporte;
     @FXML
@@ -67,7 +71,22 @@ public class InformesController extends AnchorPane implements Initializable {
 
             @Override
             public String getValue() {
-                return cellData.getValue().getFormaDePago();
+                String formaDePago = "";
+                if(cellData.getValue().getFormaDePago().equals(Venta.FORMA_PAGO.E.toString())){
+                    formaDePago = "Efectivo";
+                } else if(cellData.getValue().getFormaDePago().equals(Venta.FORMA_PAGO.T.toString())) {
+                    formaDePago = "Tarjeta";
+                }
+                return formaDePago;
+            }
+        });
+
+        colDisc.setCellValueFactory(cellData -> new ObservableValueBase<Double>() {
+            @Override
+            public Double getValue() {
+                if(cellData.getValue().getDisc() == null)
+                    return null;
+                return cellData.getValue().getDisc().doubleValue();
             }
         });
 

@@ -69,11 +69,13 @@ public class PrintTicket {
         List<Line> line = new ArrayList<>();
         Line l;
         for(LineaDeVenta lv: venta.getLineaDeVentaList()){
-            l = new Line();
-            Productos p = productosPersistence.findById(lv.getProductoId().longValue());
-            l.setProductName(p.getNombre());
-            l.setProductPrice(String.valueOf(lv.getSubTotal().doubleValue()));
-            line.add(l);
+            if(!lv.getCant().equals("0")){
+                l = new Line();
+                Productos p = productosPersistence.findById(lv.getProductoId().longValue());
+                l.setProductName(p.getNombre());
+                l.setProductPrice(String.valueOf(lv.getSubTotal().doubleValue()));
+                line.add(l);
+            }
         }
         d.setLines(line);
         if(venta.getDisc() != null){

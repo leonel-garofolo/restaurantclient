@@ -4,6 +4,7 @@ import com.restaurant.app.model.Venta;
 import com.restaurant.app.persistence.VentaPersistence;
 import com.restaurant.app.persistence.impl.jdbc.VentaPersistenceJdbc;
 import com.restaurant.app.utils.Utils;
+import com.restaurant.app.view.custom.TimeSpinner;
 import javafx.beans.value.ObservableValueBase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,7 +24,13 @@ public class InformesController extends AnchorPane implements Initializable {
     @FXML
     private DatePicker timeFechaDesde;
     @FXML
+    private TimeSpinner spkHourDesde;
+
+    @FXML
     private DatePicker timeFechaHasta;
+    @FXML
+    private TimeSpinner spkHourHasta;
+
     @FXML
     private Button btnBuscar;
     @FXML
@@ -57,6 +64,20 @@ public class InformesController extends AnchorPane implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.ventaPersistence = new VentaPersistenceJdbc();
+        setupColumn();
+        cleanFormSearch();
+        setupSpinner();
+    }
+
+    private void setupSpinner(){
+        /*
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm");
+        spkHourDesde.valueProperty().addListener((obs, oldTime, newTime) ->
+                System.out.println(formatter.format(newTime)));
+         */
+    }
+
+    private void setupColumn(){
         colFecha.setCellValueFactory(cellData -> new ObservableValueBase<String>() {
 
             @Override
@@ -112,7 +133,6 @@ public class InformesController extends AnchorPane implements Initializable {
                 return cellData.getValue().getImporte().doubleValue();
             }
         });
-        cleanFormSearch();
     }
 
     @FXML
@@ -134,13 +154,13 @@ public class InformesController extends AnchorPane implements Initializable {
     private void handleBuscar(ActionEvent event) {
         Calendar cDesde = Calendar.getInstance();
         cDesde.setTime(Utils.convertToDate(timeFechaDesde.getValue()));
-        cDesde.set(Calendar.HOUR_OF_DAY, 0);
-        cDesde.set(Calendar.MINUTE, 0);
+        cDesde.set(Calendar.HOUR_OF_DAY, spkHourDesde.getValue().getHour());
+        cDesde.set(Calendar.MINUTE, spkHourDesde.getValue().getMinute());
 
         Calendar cHasta = Calendar.getInstance();
         cHasta.setTime(Utils.convertToDate(timeFechaHasta.getValue()));
-        cHasta.set(Calendar.HOUR_OF_DAY, 23);
-        cHasta.set(Calendar.MINUTE, 59);
+        cHasta.set(Calendar.HOUR_OF_DAY, spkHourHasta.getValue().getHour());
+        cHasta.set(Calendar.MINUTE, spkHourHasta.getValue().getMinute());
 
         final List<Venta> ventaList = ventaPersistence.findVentasForDate(cDesde.getTime(), cHasta.getTime());
         tblVentas.getItems().clear();

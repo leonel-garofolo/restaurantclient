@@ -306,7 +306,7 @@ public class CajaController extends AnchorPane implements Initializable, IView {
 			List<Line> lines = new ArrayList<>();
 			Line line;
 			for(LineaDeVenta lineaDeVenta: tblProductos.getItems()){
-				if(lineaDeVenta.getProducto().getCategoriaId().longValue() == categoriaId.longValue()){
+				if(lineaDeVenta.getProducto().getCategoriaId().longValue() == categoriaId.longValue() && !lineaDeVenta.getCant().equals("0")){
 					line= new Line();
 					line.setProductName(lineaDeVenta.getProducto().getNombre());
 					lines.add(line);

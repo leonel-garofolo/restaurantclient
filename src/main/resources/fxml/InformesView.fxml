@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.restaurant.app.view.custom.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -12,7 +13,7 @@
             <Label alignment="CENTER" contentDisplay="CENTER" text="TRANSACCIONES - CONSULTA DE OPERACIONES" />
             <HBox alignment="CENTER_LEFT" prefHeight="44.0" prefWidth="600.0" spacing="5.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="44.0" prefWidth="245.0" spacing="5.0" />
+                  <HBox alignment="CENTER" prefHeight="44.0" prefWidth="179.0" spacing="5.0" />
                   <HBox fx:id="filterCombo" alignment="CENTER" prefHeight="44.0" prefWidth="210.0" spacing="5.0">
                      <children>
                         <Label fx:id="lblFiltrar" alignment="CENTER" prefHeight="17.0" prefWidth="140.0" text="Filtrar por Fechas" />
@@ -20,7 +21,9 @@
                      </children>
                   </HBox>
                   <DatePicker fx:id="timeFechaDesde" prefHeight="25.0" prefWidth="140.0" />
+                  <TimeSpinner fx:id="spkHourDesde" prefHeight="25.0" prefWidth="90.0" />
                   <DatePicker fx:id="timeFechaHasta" prefHeight="25.0" prefWidth="140.0" />
+                  <TimeSpinner fx:id="spkHourHasta" prefHeight="25.0" prefWidth="90.0" />
                   <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#handleBuscar" text="Buscar">
 						<graphic>
 							<ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">

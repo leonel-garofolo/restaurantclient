@@ -12,7 +12,6 @@ import com.restaurant.app.printer.pos.model.Detail;
 import com.restaurant.app.printer.pos.model.Footer;
 import com.restaurant.app.printer.pos.model.Header;
 import com.restaurant.app.printer.pos.model.Line;
-import com.sun.istack.internal.NotNull;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class PrintTicket {
     private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
     private Long ventaId;
 
-    public PrintTicket(@NotNull  Long ventaId) {
+    public PrintTicket( Long ventaId) {
         this.ventaId = ventaId;
         this.ventaPersistence = new VentaPersistenceJdbc();
         this.lineaDeVentaPersistence = new LineaDeVentaPersistenceJdbc();

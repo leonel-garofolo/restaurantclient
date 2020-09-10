@@ -2,10 +2,11 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.restaurant</groupId>
   <artifactId>restaurantclient</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   
   <properties>
 		<compileSource>1.8</compileSource>
+	  	<jdk>C:\Program Files\Java\jdk1.8.0_231\bin\javac.exe</jdk>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<skipTests>true</skipTests>
 	</properties>
@@ -19,7 +20,7 @@
 					<target>${compileSource}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<fork>true</fork>
-					<executable>C:\Program Files\Java\jdk1.8.0_131\bin\javac.exe</executable>
+					<executable>${jdk}</executable>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -34,7 +35,7 @@
 				</executions>
 				<configuration>
 					<!-- <source>${compileSource}</source> <target>${compileSource}</target> -->
-					<executable>C:\Program Files\Java\jdk1.8.0_131\bin\javac.exe</executable>
+					<executable>${jdk}</executable>
 					<arguments>
 						<argument>-classpath</argument>
 						<classpath />
@@ -49,9 +50,7 @@
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
-					<!-- <source>${compileSource}</source> <target>${compileSource}</target> 
-						<executable>C:\Program Files\Java\jdk1.8.0_131\bin\javac.exe</executable> -->
-					<archive>
+					 <archive>
 						<manifest>
 							<mainClass>com.restaurant.app.App</mainClass>
 						</manifest>
